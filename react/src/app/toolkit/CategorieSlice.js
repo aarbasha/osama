@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { toastError, toastSuccess } from "../../Global/ToastContainer";
 
 const API_URL = "http://localhost:8000/api";
 
@@ -77,15 +78,54 @@ export const deleteCategorie = createAsyncThunk(
       const response = await axios.delete(`${API_URL}/categories/${id}`, {
         withCredentials: true,
       });
-
-      console.log(response.data);
-      return response.data;
-
-      /* if (response.data.status === 200) {
+       if (response.data.status === 200) {
         return response.data;
       } else {
         return rejectWithValue(response.data.message);
-      } */
+      } 
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const editCategories = createAsyncThunk(
+  "categorie/editCategories",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${API_URL}/categories/${id}`, {
+        withCredentials: true,
+      });
+      if (response.data.status === 200) {
+        return response.data;
+      } else {
+        return rejectWithValue(response.data.message);
+      }
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const updateCategories = createAsyncThunk(
+  "categorie/updateCategories",
+  async ({ id, data }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `${API_URL}/categories/up/${id}`,
+        data,
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.data.status === 200) {
+        toastSuccess(response.data.message);
+        return response.data;
+      } else {
+        toastError(response.data.message);
+        return rejectWithValue(response.data.message);
+      }
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -94,12 +134,12 @@ export const deleteCategorie = createAsyncThunk(
 
 const initialState = {
   all_categories: [],
+  old_categories: [],
   status: null,
   loading: false,
   success: false,
   error: null,
   message: null,
-
   current_page: 1,
   total: 0,
   per_page: 5,
@@ -192,17 +232,53 @@ export const CategorieSlice = createSlice({
       console.log(actions.payload);
 
       // state.filter((item) => item.id !== action.payload);
-     // state.all_categories.filter((id) => id !== actions.payload);
+      // state.all_categories.filter((id) => id !== actions.payload);
       state.loading = false;
       state.success = true;
       state.status = actions.payload.status;
-      state.message = actions.payload.message; 
+      state.message = actions.payload.message;
     },
     [deleteCategorie.rejected]: (state, actions) => {
       console.log(actions.payload);
       /*   state.loading = true;
       state.status = "filed";
       state.error = actions.payload; */
+    },
+
+    //edit Categories
+    [editCategories.pending]: (state, actions) => {
+      state.status = "pending";
+      state.loading = true;
+    },
+    [editCategories.fulfilled]: (state, actions) => {
+      console.log(actions.payload);
+      state.old_categories = actions.payload.data[0];
+      state.loading = false;
+      state.success = true;
+      state.status = actions.payload.status;
+      state.message = actions.payload.message;
+    },
+    [editCategories.rejected]: (state, actions) => {
+      state.loading = true;
+      state.status = "filed";
+      state.error = actions.payload.message;
+    },
+
+    //update Categories
+    [updateCategories.pending]: (state, actions) => {
+      state.status = "pending";
+      state.loading = true;
+    },
+    [updateCategories.fulfilled]: (state, actions) => {
+      state.loading = false;
+      state.success = true;
+      state.status = actions.payload.status;
+      state.message = actions.payload.message;
+    },
+    [updateCategories.rejected]: (state, actions) => {
+      state.loading = true;
+      state.status = "filed";
+      state.error = actions.payload.message;
     },
   },
 });

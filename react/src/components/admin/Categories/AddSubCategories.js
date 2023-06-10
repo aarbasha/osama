@@ -19,7 +19,11 @@ const AddSubCategories = () => {
   const { error } = useSelector((state) => state.categories);
   const { user } = useSelector((state) => state.auth);
 
-  console.log(status);
+  useEffect(()=>{
+      dispatch(Categories())
+  },[]) 
+
+  
   const [Errors, setErrors] = useState(null);
   const [inputs, setInputs] = useState({
     name: "",

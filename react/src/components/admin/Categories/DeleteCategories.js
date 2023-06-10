@@ -6,19 +6,23 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   All_Categories,
   deleteCategorie,
+  Categories,
 } from "../../../app/toolkit/CategorieSlice";
 import { toastInfo, toastSuccess } from "../../../Global/ToastContainer";
 const DeleteCategories = (props) => {
   const [show, setShow] = useState(false);
   const [Loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const { message } = useSelector((state) => state.categories);
+  const { message , current_page } = useSelector((state) => state.categories);
 
   const handleYes = () => {
     setLoading(true);
+    
     dispatch(deleteCategorie(props.id));
+
     setTimeout(() => {
-      dispatch(All_Categories());
+
+      dispatch(All_Categories(current_page));
       toastInfo("success delete ");
       setShow(!show);
       setLoading(false);
@@ -36,7 +40,7 @@ const DeleteCategories = (props) => {
       <Modal
         show={show}
         onHide={handleNo}
-        size="lg"
+        //size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
@@ -54,8 +58,21 @@ const DeleteCategories = (props) => {
             )}
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body className="text-center h3">
-          Deleted <span className="text-danger">{props.name}</span> ??
+        <Modal.Body className=" h3">
+          <div className="row">
+            <div className="col-12 d-flex justify-content-center">
+              <img
+                src={"http://127.0.0.1:8000/cover/" + props.cover}
+                className="rounded-circle"
+                width={100}
+                height={100}
+                alt="test"
+              />
+            </div>
+            <div className="col-12 d-flex justify-content-center  mt-3">
+              Deleted : <span className="text-danger mx-1">{props.name}</span>?
+            </div>
+          </div>
         </Modal.Body>
         <Modal.Footer className="d-flex justify-content-center">
           <Button className="mx-4 px-5" variant="primary" onClick={handleNo}>

@@ -11,10 +11,9 @@ const Login = () => {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const { success } = useSelector((state) => state.auth);
-  const { isAuth } = useSelector((state) => state.auth);
-  const { error } = useSelector((state) => state.auth);
-  const { status } = useSelector((state) => state.auth);
+  const { success, isAuth, error, status, user, token } = useSelector(
+    (state) => state.auth
+  );
 
   const [inputs, setInputs] = useState({
     email: "",
@@ -30,17 +29,16 @@ const Login = () => {
   const LoginSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-
     setTimeout(() => {
       dispatch(login(inputs));
       if (isAuth) {
-        console.log("anas is auth");
-        rediract("/");
-        toastSuccess(success);
-      } else if(status === "failed") {
-        console.log("anas is not auth");
+        console.log(isAuth);
         rediract(location.pathname);
         toastError(error);
+      } else {
+        console.log(isAuth);
+        rediract("/");
+        toastSuccess(success);
       }
       setLoading(false);
     }, 3000);

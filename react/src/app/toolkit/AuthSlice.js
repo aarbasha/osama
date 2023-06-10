@@ -85,7 +85,6 @@ export const AuthSlice = createSlice({
       state.isAuth = false;
     },
     [login.fulfilled]: (state, actions) => {
-    
       state.loading = false;
       state.status = "succeeded";
       state.success = "successfyle login ...";
@@ -107,7 +106,6 @@ export const AuthSlice = createSlice({
       state.status = "loading";
     },
     [register.fulfilled]: (state, actions) => {
-    
       state.user = actions.payload.data;
       state.loading = false;
       state.status = actions.payload.status;
@@ -123,13 +121,11 @@ export const AuthSlice = createSlice({
     //profile
 
     [profile.pending]: (state, actions) => {
-  
       state.loading = true;
       state.status = "loading";
       state.isAuth = false;
     },
     [profile.fulfilled]: (state, actions) => {
- 
       state.loading = false;
       state.status = "succeeded";
       state.user = actions.payload;
@@ -137,7 +133,6 @@ export const AuthSlice = createSlice({
       state.isAuth = true;
     },
     [profile.rejected]: (state, actions) => {
- 
       state.loading = false;
       state.status = "failed";
       state.error = actions.payload.message;
@@ -153,6 +148,7 @@ export const AuthSlice = createSlice({
     [Logout.fulfilled]: (state, actions) => {
       state.loading = false;
       state.status = "succeeded";
+      state.isAuth = false;
       state.success = "successfyle logout ...";
       state.error = null;
       state.isAuth = false;
@@ -167,5 +163,3 @@ export const AuthSlice = createSlice({
 });
 
 export default AuthSlice.reducer;
-
-

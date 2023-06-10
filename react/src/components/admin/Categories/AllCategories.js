@@ -17,20 +17,18 @@ const AllCategories = () => {
   const [loading, setLoading] = useState(false);
   const [pageCount, setPageCount] = useState(0);
 
+  //const update = setInterval(() => {}, 1000);
+
   useEffect(() => {
     setLoading(true);
+    dispatch(All_Categories(current_page));
     setTimeout(() => {
-      dispatch(All_Categories(current_page));
-      setPageCount(Math.ceil(total / per_page));
       setLoading(false);
+      //dispatch(All_Categories(current_page));
+      setPageCount(Math.ceil(total / per_page));
+      //return clearInterval(update);
     }, 500);
-  
-    const update = setInterval(() => {
-      <TableCategories all_categories={all_categories} />;
-      dispatch(All_Categories(current_page));
-    }, 1000);
-    return clearInterval(update);
-  }, [dispatch, current_page , pageCount]);
+  }, [dispatch, current_page]);
 
   const handlePageClick = (e) => {
     console.log(e.selected + 1);
@@ -111,7 +109,7 @@ const AllCategories = () => {
             breakLabel="***"
             nextLabel="next >>>"
             onPageChange={handlePageClick}
-            pageRangeDisplayed={5}
+            pageRangeDisplayed={per_page}
             marginPagesDisplayed={5}
             pageCount={pageCount} //total
             previousLabel="<<< previous"

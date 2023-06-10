@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import DeleteCategories from "./DeleteCategories";
-
+import { Link, useNavigate } from "react-router-dom";
 
 const TableCategories = (props) => {
+  const rediract = useNavigate();
 
   return (
     <>
-      <tbody style={{ height: "300px" }}>
+      <tbody
+      style={{ height: "300px" }}
+      >
         {props.all_categories.map((item) => (
           <tr className="text-center" key={item.id}>
             <td>{item.id}</td>
@@ -46,9 +49,12 @@ const TableCategories = (props) => {
                 </button>
 
                 {/* update */}
-                <button className="text-warning btn">
+                <Link
+                  to={`/admin/categories/edit_categories/${item.id}`}
+                  className="text-warning btn"
+                >
                   <i className="bi bi-pencil-fill" />
-                </button>
+                </Link>
 
                 {/* deleted */}
                 <DeleteCategories
@@ -56,6 +62,7 @@ const TableCategories = (props) => {
                   // off={false}
                   id={item.id}
                   name={item.name}
+                  cover={item.cover}
                 />
               </div>
             </td>

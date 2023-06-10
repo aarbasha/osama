@@ -5,16 +5,16 @@ import { Categories } from "../../../app/toolkit/CategorieSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const MasterCategories = () => {
-  const dispatch = useDispatch();
+ // const dispatch = useDispatch();
   const { all_categories } = useSelector((state) => state.categories);
   const Rediract = useNavigate();
   const location = useLocation();
   const slice = location.pathname;
   const my = slice.split("/");
   
-  useEffect(() => {
+/*   useEffect(() => {
     dispatch(Categories());
-  }, [dispatch]);
+  }, [dispatch]); */
 
   return (
     <FadeOutAnimation>
