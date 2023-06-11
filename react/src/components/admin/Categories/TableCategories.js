@@ -2,15 +2,21 @@ import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import DeleteCategories from "./DeleteCategories";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { editCategories } from "../../../app/toolkit/CategorieSlice";
 
 const TableCategories = (props) => {
   const rediract = useNavigate();
+  const dispatch = useDispatch();
+
+  const dispatchEdit = async (id) => {
+   await dispatch(editCategories(id))
+    rediract(`/admin/categories/edit_categories/${id}`);
+  };
 
   return (
     <>
-      <tbody
-      style={{ height: "300px" }}
-      >
+      <tbody>
         {props.all_categories.map((item) => (
           <tr className="text-center" key={item.id}>
             <td>{item.id}</td>
@@ -49,12 +55,12 @@ const TableCategories = (props) => {
                 </button>
 
                 {/* update */}
-                <Link
-                  to={`/admin/categories/edit_categories/${item.id}`}
+                <button
+                  onClick={() => {dispatchEdit(item.id)}}
                   className="text-warning btn"
                 >
                   <i className="bi bi-pencil-fill" />
-                </Link>
+                </button>
 
                 {/* deleted */}
                 <DeleteCategories

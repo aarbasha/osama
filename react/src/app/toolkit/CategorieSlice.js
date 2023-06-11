@@ -78,11 +78,11 @@ export const deleteCategorie = createAsyncThunk(
       const response = await axios.delete(`${API_URL}/categories/${id}`, {
         withCredentials: true,
       });
-       if (response.data.status === 200) {
+      if (response.data.status === 200) {
         return response.data;
       } else {
         return rejectWithValue(response.data.message);
-      } 
+      }
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -171,12 +171,10 @@ export const CategorieSlice = createSlice({
       state.loading = true;
     },
     [All_Categories.fulfilled]: (state, actions) => {
-      console.log(actions.payload.data.data);
       state.all_categories = actions.payload.data.data;
       state.loading = false;
       state.status = actions.payload.status;
       state.message = actions.payload.message;
-
       state.current_page = actions.payload.data.current_page;
       state.total = actions.payload.data.total;
       state.per_page = actions.payload.data.per_page;
@@ -251,7 +249,6 @@ export const CategorieSlice = createSlice({
       state.loading = true;
     },
     [editCategories.fulfilled]: (state, actions) => {
-      console.log(actions.payload);
       state.old_categories = actions.payload.data[0];
       state.loading = false;
       state.success = true;

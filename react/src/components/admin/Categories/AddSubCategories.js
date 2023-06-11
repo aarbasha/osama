@@ -7,23 +7,23 @@ import {
 } from "../../../app/toolkit/CategorieSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toastError, toastSuccess } from "../../../Global/ToastContainer";
+import Spinner from "react-bootstrap/Spinner";
 
 const AddSubCategories = () => {
   const dispatch = useDispatch();
   const rediract = useNavigate();
   const location = useLocation();
-  const { success } = useSelector((state) => state.categories);
-  const { all_categories } = useSelector((state) => state.categories);
-  const { message } = useSelector((state) => state.categories);
-  const { status } = useSelector((state) => state.categories);
-  const { error } = useSelector((state) => state.categories);
+  const { success, all_categories, message, status, error } = useSelector(
+    (state) => state.categories
+  );
   const { user } = useSelector((state) => state.auth);
 
-  useEffect(()=>{
-      dispatch(Categories())
-  },[]) 
+  useEffect(() => {
+    dispatch(Categories());
 
-  
+    setErrors(null);
+  }, []);
+
   const [Errors, setErrors] = useState(null);
   const [inputs, setInputs] = useState({
     name: "",
@@ -33,14 +33,12 @@ const AddSubCategories = () => {
     parent_id: "",
   });
   const [cover, setCover] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [coverPreview, setCoverPreview] = useState(null);
   const handelChangeInputs = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     setInputs((values) => ({ ...values, [name]: value }));
-    if (e.target.value) {
-      setErrors(null);
-    }
   };
 
   const handelChangeCover = (e) => {
@@ -56,7 +54,6 @@ const AddSubCategories = () => {
 
   const add_subcategories = (e) => {
     e.preventDefault();
-
     const data = new FormData();
     data.append("name", inputs.name);
     data.append("name_folder", inputs.name_folder);
@@ -65,16 +62,20 @@ const AddSubCategories = () => {
     data.append("parent_id", inputs.parent_id);
     data.append("cover", cover.cover);
 
-    dispatch(add_subCategories(data));
-    setErrors(error);
-    console.log(error);
-    if (status !== "filed") {
-      toastSuccess(message);
-      //rediract("/admin/categories/all_categories");
-    } else {
-    
-      toastError("error add categores");
-    }
+    setLoading(true);
+    setTimeout(() => {
+      dispatch(add_subCategories(data));
+
+      if (status !== "filed") {
+        toastSuccess(message);
+        rediract("/admin/categories/all_categories");
+      } else {
+        setErrors(error);
+        toastError("error add categores");
+        rediract(location.pathname);
+      }
+      setLoading(false);
+    }, 2000);
   };
 
   return (
@@ -84,7 +85,11 @@ const AddSubCategories = () => {
           <div className="card">
             <div className="card-body">
               <div className="">
-                <form onSubmit={add_subcategories} enctype="multipart/form-data" className="row g-3">
+                <form
+                  onSubmit={add_subcategories}
+                  enctype="multipart/form-data"
+                  className="row g-3"
+                >
                   <div className="row">
                     <div className="col-12 my-2">
                       <label className="form-label"> Name</label>
@@ -138,9 +143,7 @@ const AddSubCategories = () => {
                         value={inputs.parent_id}
                         required
                       >
-                        <option defaultValue={null}>
-                          Open this select menu
-                        </option>
+                        <option value={"x"}>Open this select menu</option>
 
                         {all_categories ? (
                           all_categories.map((item) => (
@@ -232,7 +235,16 @@ const AddSubCategories = () => {
 
                   <div className="col-12">
                     <button type="submit" className="btn btn-success px-4 mx-2">
-                      Add Sub Categories
+                      {loading ? (
+                        <Spinner
+                          size="sm"
+                          className="mx-3"
+                          animation="border"
+                          variant="success"
+                        />
+                      ) : (
+                        <> Add Sub Categories</>
+                      )}
                     </button>
 
                     <button className="btn btn-danger px-4 mx-2">Back</button>

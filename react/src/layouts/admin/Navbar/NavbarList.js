@@ -3,22 +3,25 @@ import { Link } from "react-router-dom";
 import FullScreenBtn from "../../../Global/FullScreenBtn";
 import { useSelector, useDispatch } from "react-redux";
 import { Logout } from "../../../app/toolkit/AuthSlice";
-import { useNavigate  , useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
 
-
 const NavbarList = () => {
-
-
   const { user } = useSelector((state) => state.auth);
   const { isAuth } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  console.log(user.avatar);
+
   const logout = () => {
-    Cookies.remove('jwt');
+    Cookies.remove("jwt");
     dispatch(Logout());
     navigate("/login");
+  };
+
+  const Profile = () => {
+    navigate("/admin/myProfile");
   };
 
   return (
@@ -583,14 +586,21 @@ const NavbarList = () => {
               >
                 <div className="user-setting d-flex align-items-center gap-1">
                   <img
-                    src={`https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y`}
+                    src={
+                      user.avatar === null
+                        ? `https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y`
+                        : `http://localhost:8000/photo/${user.avatar}`
+                    }
                     alt="test"
                     className="user-img rounded-circle"
                     width={60}
                     height={60}
                   />
 
-                  <div className="user-name d-none d-sm-block"> {user.name}</div>
+                  <div className="user-name d-none d-sm-block">
+                    {" "}
+                    {user.name}
+                  </div>
                 </div>
               </a>
               <ul className="dropdown-menu dropdown-menu-end">
@@ -598,7 +608,11 @@ const NavbarList = () => {
                   <a className="dropdown-item" href="#">
                     <div className="d-flex align-items-center">
                       <img
-                        src={`https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y`}
+                        src={
+                          user.avatar === null
+                            ? `https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y`
+                            : `http://localhost:8000/photo/${user.avatar}`
+                        }
                         alt={"name"}
                         className="user-img rounded-circle"
                         width={60}
@@ -606,7 +620,9 @@ const NavbarList = () => {
                       />
 
                       <div className="ms-3">
-                        <h6 className="mb-0 dropdown-user-name">{user.email}</h6>
+                        <h6 className="mb-0 dropdown-user-name">
+                          {user.email}
+                        </h6>
                         <span className="mb-0 dropdown-user-designation text-secondary">
                           {user.username}
                         </span>
@@ -618,7 +634,7 @@ const NavbarList = () => {
                   <hr className="dropdown-divider" />
                 </li>
                 <li>
-                  <button className="dropdown-item">
+                  <button onClick={Profile} className="dropdown-item">
                     <div className="d-flex align-items-center">
                       <div className="setting-icon">
                         <i className="bi bi-person-fill" />

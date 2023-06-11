@@ -70,7 +70,7 @@ class CategorieController extends Controller
         $validator = Validator($request->all(), [
             'name' => 'required|string|max:255|unique:categories',
             'info' => 'required|string|max:855',
-            'cover' => 'required|image|max:1048576',
+            'cover' => 'required|image|max:9999999999',
             'name_folder' => 'required'
         ]);
         if ($validator->fails()) {

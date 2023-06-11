@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { add_Categories } from "../../../app/toolkit/CategorieSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toastError, toastSuccess } from "../../../Global/ToastContainer";
+import Spinner from "react-bootstrap/Spinner";
 
 const AddCategories = () => {
   const dispatch = useDispatch();
@@ -23,7 +24,8 @@ const AddCategories = () => {
   const [cover, setCover] = useState([]);
   const [coverPreview, setCoverPreview] = useState(null);
   const [ErrorMessage, setErrorMessage] = useState({});
-
+  const [loading, setLoading] = useState(false);
+  
   const handelChangeInputs = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -52,7 +54,7 @@ const AddCategories = () => {
     data.append("cover", cover.cover);
 
     dispatch(add_Categories(data));
-
+    setLoading(true);
     setTimeout(() => {
       if (status === 200) {
         toastSuccess("success add categories");
@@ -61,6 +63,7 @@ const AddCategories = () => {
         toastError("Error");
         rediract(location.pathname);
       }
+      setLoading(false);
     }, 2000);
   };
 
@@ -71,7 +74,11 @@ const AddCategories = () => {
           <div className="card">
             <div className="card-body">
               <div className="">
-                <form onSubmit={add_categories} enctype="multipart/form-data" className="row g-3">
+                <form
+                  onSubmit={add_categories}
+                  enctype="multipart/form-data"
+                  className="row g-3"
+                >
                   <div className="row">
                     <div className="col-12 my-2">
                       <label className="form-label"> Name</label>
@@ -181,7 +188,16 @@ const AddCategories = () => {
 
                   <div className="col-12">
                     <button type="submit" className="btn btn-dark px-4 mx-2">
-                      Add Categories
+                      {loading ? (
+                        <Spinner
+                          size="sm"
+                          className="mx-3"
+                          animation="border"
+                          variant="white"
+                        />
+                      ) : (
+                        <> Add Categories</>
+                      )}
                     </button>
 
                     <button className="btn btn-danger px-4 mx-2">Back</button>

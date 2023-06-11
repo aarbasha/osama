@@ -63,6 +63,20 @@ export const Logout = createAsyncThunk(
   }
 );
 
+export const UpdateProfile = createAsyncThunk(
+  "auth/UpdateProfile",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${API_URL}/upProfile`, data, {
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const initialState = {
   user: null,
   token: null,
@@ -158,6 +172,24 @@ export const AuthSlice = createSlice({
       state.status = "failed";
       state.error = actions.payload.message;
       state.isAuth = false;
+    },
+
+    //logout
+    [UpdateProfile.pending]: (state, actions) => {
+      state.loading = true;
+      state.status = "loading";
+    },
+    [UpdateProfile.fulfilled]: (state, actions) => {
+      console.log(actions.payload.data);
+      state.user = actions.payload.data;
+      state.loading = false;
+      state.status = "succeeded";
+      state.error = null;
+    },
+    [UpdateProfile.rejected]: (state, actions) => {
+      state.loading = false;
+      state.status = "failed";
+      state.error = actions.payload.message;
     },
   },
 });

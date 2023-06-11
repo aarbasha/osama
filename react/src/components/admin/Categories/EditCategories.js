@@ -18,8 +18,6 @@ const EditCategories = () => {
   const dispatch = useDispatch();
   const { all_categories, old_categories, error, status, message } =
     useSelector((state) => state.categories);
-
-  console.log(old_categories);
   const { user } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
   const [loadingInput, setLoadingInput] = useState(false);
@@ -33,16 +31,14 @@ const EditCategories = () => {
     auther: "",
     parent_id: "",
   });
-
-  
   useEffect(() => {
     setLoadingInput(true);
+    dispatch(editCategories(id));
+    dispatch(Categories());
     setTimeout(() => {
-      setLoadingInput(false);
-      dispatch(Categories());
-      dispatch(editCategories(id));
       setInputs(old_categories);
-    }, 1100);
+      setLoadingInput(false);
+    }, 1000);
     setErrors(error);
   }, []);
 
@@ -65,7 +61,7 @@ const EditCategories = () => {
     setCoverPreview(null);
   };
 
-  const UpdateCategories = (e) => {
+  const UpdateCategories = async (e) => {
     e.preventDefault();
 
     const data = new FormData();
@@ -78,16 +74,12 @@ const EditCategories = () => {
       data.append("parent_id", inputs.parent_id);
     }
 
-    dispatch(updateCategories({ data: data, id: id }));
+   await dispatch(updateCategories({ data: data, id: id }));
     setLoading(true);
     setTimeout(() => {
       if (status === 200) {
-        console.log(status + message);
-
         rediract("/admin/categories/all_categories");
       } else {
-        console.log(status + message);
-
         rediract(Location.pathname);
       }
       setLoading(false);

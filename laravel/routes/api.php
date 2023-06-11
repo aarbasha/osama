@@ -21,13 +21,14 @@ Route::post('register', [AuthController::class, 'register']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('profile', [AuthController::class, 'profile']);
+    Route::post('upProfile', [AuthController::class, 'updateProfile']);
 });
 
 Route::controller(CategorieController::class)->group(function () {
 
     Route::prefix('categories')->group(function () {
 
-      
+
         Route::get('/categories', 'categories');
         //all categories with pagination *
         Route::get('/all', 'index');

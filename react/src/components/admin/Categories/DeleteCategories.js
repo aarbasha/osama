@@ -8,29 +8,29 @@ import {
   deleteCategorie,
   Categories,
 } from "../../../app/toolkit/CategorieSlice";
-import { toastInfo, toastSuccess } from "../../../Global/ToastContainer";
+import { toastSuccess } from "../../../Global/ToastContainer";
 const DeleteCategories = (props) => {
   const [show, setShow] = useState(false);
   const [Loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const { message , current_page } = useSelector((state) => state.categories);
+  const { message, current_page } = useSelector((state) => state.categories);
 
   const handleYes = () => {
     setLoading(true);
-    
     dispatch(deleteCategorie(props.id));
 
     setTimeout(() => {
-
       dispatch(All_Categories(current_page));
-      toastInfo("success delete ");
+      toastSuccess("success delete ");
       setShow(!show);
       setLoading(false);
     }, 500);
   };
+
   const handleNo = () => {
     setShow(!show);
   };
+
   return (
     <>
       <span className="" onClick={handleNo}>

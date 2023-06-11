@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\User;
+use App\Mail\AuthMail;
+use App\Mail\WelcomeEmail;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Traits\GlobalTraits;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Validator;
 
@@ -38,11 +41,15 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'username' => $request->username,
-            'email' => $request->email,
+            'email' => trim($request->email),
             'password' => bcrypt($request->password)
         ]);
 
+
+
         if ($user) {
+
+            Mail::to($user->email)->send(new WelcomeEmail($user));
             return $this->SendResponse($user, 'Success Register User  ', 200);
         }
         return $this->SendResponse(null, 'Error Register User  ', 401);
@@ -71,7 +78,6 @@ class AuthController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
-       
     }
     //=================================================================================
     public function profile()
@@ -84,5 +90,56 @@ class AuthController extends Controller
         /*     $cookie = Cookie::forget('jwt'); */
         $cookie = cookie('jwt', '', 0, '/', null, false, true); // Clear the cookie
         return response()->json(['message' => 'Logged out successfully'])->withCookie($cookie);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $validator = Validator($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|max:855',
+            'username' => 'required|string|max:855',
+            //'avatar' => 'required',
+            'phone' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:9',
+            'status' => 'required',
+            'roles' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return $this->SendResponse([], $validator->errors(), 401);
+        }
+        $user = $request->user();
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->file("avatar");
+            $imageName = time() . '_' . $avatar->getClientOriginalName();
+            $avatar->move(public_path("photo/"), $imageName);
+            $user->avatar = $imageName;
+            $user->name = $request->name;
+            $user->username = $request->username;
+            $user->email = trim($request->email);
+            if ($request->password) {
+                $user->password = bcrypt($request->password);
+            }
+            $user->phone = $request->phone;
+            $user->status = $request->status;
+            $user->roles = $request->roles;
+            $user->save();
+            if ($user) {
+                return $this->SendResponse($user, 'Success update profile User  ', 200);
+            }
+        } else {
+            $user = $request->user();
+            $user->name = $request->name;
+            $user->username = $request->username;
+            $user->email = trim($request->email);
+            if ($request->password) {
+                $user->password = bcrypt($request->password);
+            }
+            $user->phone = $request->phone;
+            $user->status = $request->status;
+            $user->roles = $request->roles;
+            $user->save();
+            if ($user) {
+                return $this->SendResponse($user, 'Success update profile User  ', 200);
+            }
+        }
     }
 }

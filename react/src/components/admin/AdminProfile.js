@@ -1,7 +1,82 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import GlobalAnimation from "../../Animation/GlobalAnimation";
+import { useSelector, useDispatch } from "react-redux";
+import { UpdateProfile } from "../../app/toolkit/AuthSlice";
+import Spinner from "react-bootstrap/Spinner";
+import { toastError, toastSuccess } from "../../Global/ToastContainer";
 
 const AdminProfile = () => {
+  const dispatch = useDispatch();
+  const { user, status, message } = useSelector((state) => state.auth);
+  const [loading, setLoading] = useState(false);
+  const [inputs, setInputs] = useState({
+    name: "",
+    email: "",
+    username: "",
+    password: "",
+    status: "",
+    roles: "",
+    phone: "",
+  });
+  const [avatar, setAvatar] = useState([]);
+  const [avatarPreview, setAvatarPreview] = useState(null);
+  const handelChangeInputs = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setInputs((values) => ({ ...values, [name]: value }));
+  };
+  const handelChangeCover = (e) => {
+    setAvatar({ avatar: e.target.files[0] });
+    setAvatarPreview(URL.createObjectURL(e.target.files[0]));
+  };
+
+  const RemoveCover = (e) => {
+    e.preventDefault();
+    setAvatar([]);
+    setAvatarPreview(null);
+  };
+
+  const [Checked, setChecked] = useState(true);
+  const handelChangechecked = (e) => {
+    if (e.target.checked === true) {
+      setChecked(false);
+    } else {
+      setChecked(true);
+    }
+  };
+
+  useEffect(() => {
+    setInputs(user);
+  }, []);
+
+  const updateProfile = (e) => {
+    e.preventDefault();
+
+    const data = new FormData();
+    data.append("name", inputs.name);
+    data.append("username", inputs.username);
+    data.append("email", inputs.email);
+    data.append("phone", inputs.phone);
+    data.append("roles", inputs.roles);
+    data.append("status", inputs.status);
+    data.append("avatar", avatar.avatar);
+    if (Checked === false) {
+      data.append("password", inputs.password);
+    }
+    dispatch(UpdateProfile(data));
+    setLoading(true);
+    setTimeout(() => {
+      console.log(status);
+
+      if (status === "succeeded") {
+        toastSuccess("success update my profile");
+      } else {
+        toastError("Error . not Updata profile");
+      }
+      setLoading(false);
+    }, 2000);
+  };
+
   return (
     <GlobalAnimation>
       <div className="row">
@@ -9,13 +84,19 @@ const AdminProfile = () => {
           <div className="card">
             <div className="card-body">
               <div className="">
-                <form className="row g-3" encType="multipart/form-data">
+                <form
+                  onSubmit={updateProfile}
+                  className="row g-3"
+                  encType="multipart/form-data"
+                >
                   <div className="row">
                     <div className="col-6 my-2">
                       <label className="form-label"> Name</label>
                       <input
                         type="text"
                         name="name"
+                        onChange={handelChangeInputs}
+                        value={inputs.name}
                         className="form-control"
                         placeholder="Enter Name"
                       />
@@ -26,6 +107,8 @@ const AdminProfile = () => {
                       <input
                         type="text"
                         name="username"
+                        onChange={handelChangeInputs}
+                        value={inputs.username}
                         className="form-control"
                         placeholder="Enter username"
                       />
@@ -36,6 +119,8 @@ const AdminProfile = () => {
                       <input
                         type="email"
                         name="email"
+                        onChange={handelChangeInputs}
+                        value={inputs.email}
                         className="form-control"
                         placeholder="Enter Email"
                       />
@@ -46,6 +131,8 @@ const AdminProfile = () => {
                       <input
                         type="number"
                         name="phone"
+                        onChange={handelChangeInputs}
+                        value={inputs.phone}
                         className="form-control"
                         placeholder="Enter phone"
                       />
@@ -53,7 +140,12 @@ const AdminProfile = () => {
 
                     <div className="col-6 my-2">
                       <label className="form-label">Status</label>
-                      <select name="status" className="form-select">
+                      <select
+                        name="status"
+                        onChange={handelChangeInputs}
+                        value={inputs.status}
+                        className="form-select"
+                      >
                         <option value="1">Active</option>
                         <option value="0">Not Active</option>
                       </select>
@@ -61,15 +153,20 @@ const AdminProfile = () => {
 
                     <div className="col-6 my-2">
                       <label className="form-label">Type</label>
-                      <select name="rouls" className="form-select">
+                      <select
+                        name="rouls"
+                        onChange={handelChangeInputs}
+                        value={inputs.roles}
+                        className="form-select"
+                      >
                         <option value="2">User</option>
                         <option value="1">Admin</option>
-
                         <option value="0">Manger</option>
                       </select>
                     </div>
 
-                    <div className="col-6 my-2">
+                    <div className="row my-2">
+                      <div className="col-6"></div>
                       <label className="form-label">Password</label>
                       <input
                         type="password"
@@ -77,22 +174,23 @@ const AdminProfile = () => {
                         placeholder="Enter Password"
                         name="password"
                         id="password"
+                        disabled={Checked}
                       />
 
-                      <div className="form-check form-switch">
+                      <div className="form-check mt-1 form-switch">
                         <input
                           className="form-check-input "
                           type="checkbox"
                           id="Checked"
                           style={{ width: "100px", height: "20px" }}
-                          // onChange={(e) => handelChangechecked(e)}
+                          onChange={(e) => handelChangechecked(e)}
                         />
                         <label
-                          // className={
-                          //     Checked ?
-                          //     "form-check-label mx-3  px-5 my-1 bg-warning  text-dark " :
-                          //     "form-check-label mx-3 px-5  my-1  bg-danger text-white"
-                          // }
+                          className={
+                            Checked
+                              ? "form-check-label mx-3 px-2  my-1 bg-warning  text-dark "
+                              : "form-check-label mx-3 px-2 my-1  bg-danger text-white"
+                          }
                           htmlFor="Checked"
                           style={{
                             width: "auto",
@@ -107,15 +205,25 @@ const AdminProfile = () => {
                     </div>
 
                     <div className="col-12 my-2">
-                      <input
-                        name="photo"
-                        className="form-control d-none"
-                        type="file"
-                        id="file"
-                      />
                       <label className="btn btn-dark px-4 my-3" htmlFor="file">
                         Uplode Images Avatar
                       </label>
+
+                      <input
+                        name="avatar"
+                        className="form-control d-none"
+                        type="file"
+                        id="file"
+                        onChange={handelChangeCover}
+                      />
+
+                      <button
+                        onClick={RemoveCover}
+                        disabled={avatarPreview === null}
+                        className="btn btn-primary mx-3"
+                      >
+                        Remove Avatar
+                      </button>
                     </div>
 
                     <div className="col-12 my-2">
@@ -134,10 +242,19 @@ const AdminProfile = () => {
                   <div className="col-12">
                     <button
                       type="submit"
-                      className="btn btn-success  mx-2"
+                      className="btn btn-outline-success  mx-2"
                       style={{ width: "200px" }}
                     >
-                      Update User
+                      {loading ? (
+                        <Spinner
+                          size="sm"
+                          className="mx-3"
+                          animation="border"
+                          variant="danger"
+                        />
+                      ) : (
+                        <> Update my Profile</>
+                      )}
                     </button>
 
                     <button className="btn btn-danger px-4 mx-2">Back</button>
@@ -151,17 +268,28 @@ const AdminProfile = () => {
         <div className="col-12 col-lg-4">
           <div className="card shadow-sm border-0 overflow-hidden">
             <div className="card-body">
-              
-                
-                  <div className="profile-avatar text-center">
-                        <img
-                          src={`https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y`}
-                          className="user-img rounded-circle"
-                          alt={"user-profile"}
-                          style={{ width: "250px", height: "250px" }}
-                        />
-                  </div>
-            
+              <div className="profile-avatar text-center">
+                {avatarPreview !== null ? (
+                  <img
+                    src={avatarPreview}
+                    className="user-img rounded-circle"
+                    alt={"user-profile"}
+                    style={{ width: "250px", height: "250px" }}
+                  />
+                ) : (
+                  <img
+                    src={
+                      user.avatar === null
+                        ? `https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y`
+                        : `http://localhost:8000/photo/${inputs.avatar}`
+                    }
+                    className="user-img rounded-circle"
+                    alt={"user-profile"}
+                    style={{ width: "250px", height: "250px" }}
+                  />
+                )}
+              </div>
+
               <div className="d-flex align-items-center justify-content-around mt-5 gap-3">
                 <div className="text-center">
                   <h4 className="mb-0">45</h4>
@@ -176,7 +304,16 @@ const AdminProfile = () => {
                   <p className="mb-0 text-secondary">Comments</p>
                 </div>
               </div>
-              
+              <div
+                className="d-flex align-items-center justify-content-around mt-5 gap-3"
+                style={{ height: "200px" }}
+              >
+                loading kdjlasdj djaskdljalsd djskdjaldja djsakdjsladj dkasjdlsa
+                loading kdjlasdj djaskdljalsd djskdjaldja djsakdjsladj dkasjdlsa
+                loading kdjlasdj djaskdljalsd djskdjaldja djsakdjsladj dkasjdlsa
+                loading kdjlasdj djaskdljalsd djskdjaldja djsakdjsladj dkasjdlsa
+                loading kdjlasdj djaskdljalsd djskdjaldja djsakdjsladj dkasjdlsa
+              </div>
             </div>
           </div>
         </div>

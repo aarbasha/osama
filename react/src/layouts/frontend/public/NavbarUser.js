@@ -122,7 +122,11 @@ const NavbarUser = () => {
                         >
                           <div className="user-setting d-flex align-items-center gap-1">
                             <img
-                              src={`https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y`}
+                              src={
+                                user.avatar === null
+                                  ? `https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y`
+                                  : `http://localhost:8000/photo/${user.avatar}`
+                              }
                               alt={"test"}
                               className="user-img rounded-circle"
                               width={40}
@@ -142,11 +146,15 @@ const NavbarUser = () => {
                             <a className="dropdown-item" href="#">
                               <div className="d-flex p-2 justify-content-center">
                                 <img
-                                  src={`https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y`}
+                                  src={
+                                    user.avatar === null
+                                      ? `https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y`
+                                      : `http://localhost:8000/photo/${user.avatar}`
+                                  }
                                   alt={"name"}
                                   className="user-img rounded-circle"
-                                  width={80}
-                                  height={80}
+                                  width={100}
+                                  height={100}
                                 />
                               </div>
 

@@ -10,30 +10,55 @@ import ReactPaginate from "react-paginate";
 
 const AllCategories = () => {
   const dispatch = useDispatch();
-  const { all_categories } = useSelector((state) => state.categories);
-  const { current_page } = useSelector((state) => state.categories);
-  const { total } = useSelector((state) => state.categories);
-  const { per_page } = useSelector((state) => state.categories);
+  const { all_categories, current_page, total, per_page } = useSelector(
+    (state) => state.categories
+  );
   const [loading, setLoading] = useState(false);
   const [pageCount, setPageCount] = useState(0);
 
-  //const update = setInterval(() => {}, 1000);
-
   useEffect(() => {
     setLoading(true);
-    dispatch(All_Categories(current_page));
+
+    setPageCount(Math.ceil(total / per_page));
+
     setTimeout(() => {
+      dispatch(All_Categories(current_page));
       setLoading(false);
-      //dispatch(All_Categories(current_page));
-      setPageCount(Math.ceil(total / per_page));
-      //return clearInterval(update);
     }, 500);
   }, [dispatch, current_page]);
 
-  const handlePageClick = (e) => {
-    console.log(e.selected + 1);
+  const Pagination =  () =>{
+    return (
+       <ReactPaginate
+            breakLabel="***"
+            nextLabel="next >>>"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={per_page}
+            marginPagesDisplayed={5}
+            pageCount={pageCount} //total
+            previousLabel="<<< previous"
+            renderOnZeroPageCount={null}
+            containerClassName="pagination rounded "
+            pageClassName="page-item"
+            pageLinkClassName="page-link"
+            previousClassName="page-item"
+            previousLinkClassName="page-link"
+            nextClassName="page-item"
+            nextLinkClassName="page-link"
+            breakClassName="page-item"
+            breakLinkClassName="page-link"
+            activeClassName="active"
+          />
+    )
+  }
+
+  const handlePageClick = async (e) => {
     let current_page = e.selected + 1;
-    dispatch(All_Categories(current_page));
+   await dispatch(All_Categories(current_page));
+  };
+
+  const handelChangeSelect = (e) => {
+    console.log(e.target.value);
   };
 
   return (
@@ -55,12 +80,18 @@ const AllCategories = () => {
               </div>
             </div>
             <div className="col-lg-2 col-6 col-md-3">
-              <select className="form-select">
-                <option>Status</option>
+              <select onChange={handelChangeSelect} className="form-select">
+                <option value={0} selected>
+                  choes{" "}
+                </option>
+                <option value={1}>Primary Categories</option>
+                <option value={2}>Sub Categories</option>
+
+                {/*   <option>Status</option>
                 <option>Active</option>
                 <option>Disabled</option>
                 <option>Pending</option>
-                <option>Show All</option>
+                <option>Show All</option> */}
               </select>
             </div>
             <div className="col-lg-2 col-6 col-md-3">
@@ -97,7 +128,6 @@ const AllCategories = () => {
                     <th>Action</th>
                   </tr>
                 </thead>
-
                 <TableCategories all_categories={all_categories} />
               </table>
             </div>
@@ -105,26 +135,7 @@ const AllCategories = () => {
         )}
 
         <nav className={"mt-5 h5 d-flex justify-content-center mt-3"}>
-          <ReactPaginate
-            breakLabel="***"
-            nextLabel="next >>>"
-            onPageChange={handlePageClick}
-            pageRangeDisplayed={per_page}
-            marginPagesDisplayed={5}
-            pageCount={pageCount} //total
-            previousLabel="<<< previous"
-            renderOnZeroPageCount={null}
-            containerClassName="pagination rounded "
-            pageClassName="page-item"
-            pageLinkClassName="page-link"
-            previousClassName="page-item"
-            previousLinkClassName="page-link"
-            nextClassName="page-item"
-            nextLinkClassName="page-link"
-            breakClassName="page-item"
-            breakLinkClassName="page-link"
-            activeClassName="active"
-          />
+          {Pagination()}
         </nav>
 
         <div className="card-body"></div>
