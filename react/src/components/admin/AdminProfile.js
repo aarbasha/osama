@@ -63,10 +63,10 @@ const AdminProfile = () => {
     if (Checked === false) {
       data.append("password", inputs.password);
     }
-    dispatch(UpdateProfile(data));
+ 
     setLoading(true);
     setTimeout(() => {
-      console.log(status);
+      dispatch(UpdateProfile(data));
 
       if (status === "succeeded") {
         toastSuccess("success update my profile");
@@ -279,7 +279,7 @@ const AdminProfile = () => {
                 ) : (
                   <img
                     src={
-                      user.avatar === null
+                      user.avatar === 'null'
                         ? `https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y`
                         : `http://localhost:8000/photo/${inputs.avatar}`
                     }

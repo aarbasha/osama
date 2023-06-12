@@ -1,4 +1,4 @@
-import React from "react";
+import React , {useEffect, useState} from "react";
 import { useRoutes } from "react-router-dom";
 import { RouterAdmin } from "./RouterAdmin";
 import { RouterUser } from "./RouterUser";
@@ -14,6 +14,17 @@ import { useSelector } from "react-redux";
 
 const RouterIndex = () => {
   const { isAuth } = useSelector((state) => state.auth);
+
+  /* const [AuthChek  , setAuthChek ] = useState(isAuth)
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setAuthChek(isAuth)
+      
+    }, 1000);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []); */
 
   const Router = useRoutes([
     {

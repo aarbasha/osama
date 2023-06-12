@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import FadeOutAnimation from "../../../Animation/FadeOutAnimation";
-import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
-
-const MasterCategories = () => {
+import { NavLink, useNavigate, Outlet, useLocation } from "react-router-dom";
+const MasterPosts = () => {
   const Rediract = useNavigate();
   const location = useLocation();
   const slice = location.pathname;
@@ -32,28 +31,20 @@ const MasterCategories = () => {
             </nav>
           </div>
 
-          <div className="ms-auto  flex-row-start">
+          <div className="ms-auto">
             <NavLink
-              to={"/admin/categories/sub_categories"}
-              className=" btn btn-outline-warning mx-2"
-            >
-              Add Sub Categorie
-            </NavLink>
-
-            <NavLink
-              to={"/admin/categories/add_categories"}
-              className="btn btn-outline-primary mx-2"
-            >
-              Add Categorie
-            </NavLink>
-
-            <NavLink
-              to={"/admin/categories/all_categories"}
+              to={"/admin/posts/all_posts"}
               type="button"
-              className="btn btn-outline-dark mx-2"
+              className="btn btn-dark mx-2"
             >
-              All Categories
+              All Posts
             </NavLink>
+
+            <button className={"btn btn-primary mx-2"}>
+              <NavLink to={"/admin/posts/add_posts"} className="text-white">
+                Add Posts
+              </NavLink>
+            </button>
 
             <div className="d-flex flex-row-reverse">
               <button
@@ -72,4 +63,4 @@ const MasterCategories = () => {
   );
 };
 
-export default MasterCategories;
+export default MasterPosts;

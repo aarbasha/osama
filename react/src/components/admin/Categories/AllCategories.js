@@ -18,9 +18,8 @@ const AllCategories = () => {
 
   useEffect(() => {
     setLoading(true);
-
     setPageCount(Math.ceil(total / per_page));
-
+    Pagination()
     setTimeout(() => {
       dispatch(All_Categories(current_page));
       setLoading(false);

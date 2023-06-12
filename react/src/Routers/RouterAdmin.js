@@ -32,6 +32,11 @@ import All_Roles from "../components/admin/Roles/All_Roles";
 import Add_Roles from "../components/admin/Roles/Add_Roles";
 import Edit_Roles from "../components/admin/Roles/Edit_Roles";
 import AddSubCategories from "../components/admin/Categories/AddSubCategories";
+import MasterPosts from "../components/admin/Posts/MasterPosts";
+import AllPosts from "../components/admin/Posts/AllPosts";
+import EditPosts from "../components/admin/Posts/EditPosts";
+import AddPosts from "../components/admin/Posts/AddPosts";
+import ShowPosts from "../components/admin/Posts/ShowPosts";
 
 export const RouterAdmin = () => {
   return [
@@ -163,6 +168,29 @@ export const RouterAdmin = () => {
         {
           path: "edit_products/:id",
           element: <EditProducts />,
+        },
+      ],
+    },
+
+    {
+      path: "posts",
+      element: <MasterPosts />,
+      children: [
+        {
+          path: "all_posts",
+          element: <AllPosts />,
+        },
+        {
+          path: "add_posts",
+          element: <AddPosts />,
+        },
+        {
+          path: "edit_posts/:id",
+          element: <EditPosts />,
+        },
+        {
+          path: "show_posts/:id",
+          element: <ShowPosts />,
         },
       ],
     },

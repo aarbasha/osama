@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CategorieController;
+use App\Http\Controllers\API\UsersController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -27,8 +29,6 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::controller(CategorieController::class)->group(function () {
 
     Route::prefix('categories')->group(function () {
-
-
         Route::get('/categories', 'categories');
         //all categories with pagination *
         Route::get('/all', 'index');
@@ -48,5 +48,22 @@ Route::controller(CategorieController::class)->group(function () {
         Route::delete('/{id}', 'destroy');
 
         Route::get('test', 'creteFoldersInPublic');
+    });
+});
+
+
+Route::controller(UsersController::class)->group(function () {
+
+    Route::prefix('users')->group(function () {
+        //all users *
+        Route::get('/all', 'users');
+        //show single user  *
+        Route::get('/{id}', 'user');
+        // create user*
+        Route::post('/add', 'store');
+        // Update categories
+        Route::post('/up/{id}', 'update');
+        // destroy  categories
+        Route::delete('/{id}', 'destroy');
     });
 });

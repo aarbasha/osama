@@ -123,7 +123,7 @@ const NavbarUser = () => {
                           <div className="user-setting d-flex align-items-center gap-1">
                             <img
                               src={
-                                user.avatar === null
+                                user.avatar === 'null'
                                   ? `https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y`
                                   : `http://localhost:8000/photo/${user.avatar}`
                               }
@@ -147,7 +147,7 @@ const NavbarUser = () => {
                               <div className="d-flex p-2 justify-content-center">
                                 <img
                                   src={
-                                    user.avatar === null
+                                    user.avatar === 'null'
                                       ? `https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y`
                                       : `http://localhost:8000/photo/${user.avatar}`
                                   }
