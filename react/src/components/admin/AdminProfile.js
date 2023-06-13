@@ -154,7 +154,7 @@ const AdminProfile = () => {
                     <div className="col-6 my-2">
                       <label className="form-label">Type</label>
                       <select
-                        name="rouls"
+                        name="roles"
                         onChange={handelChangeInputs}
                         value={inputs.roles}
                         className="form-select"

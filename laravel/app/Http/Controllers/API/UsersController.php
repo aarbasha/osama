@@ -15,8 +15,6 @@ class UsersController extends Controller
 
     public function users()
     {
-
-
         $users = User::all();
         if ($users) {
             return $this->SendResponse($users, 'success all users', 200);
@@ -148,4 +146,22 @@ class UsersController extends Controller
         }
         return $this->SendResponse(null, 'error delete  User  ', 400);
     }
+
+    public function UsersOnline()
+    {
+        // show all users is online
+        $timeout = now()->subMinutes(2);
+        $usersOnlin = User::where('last_seen_at', '>=', $timeout)->get();
+        /* $SetusersOffline = User::where('last_seen_at', '<', $timeout)->get();
+        foreach ($SetusersOffline as $user) {
+            $user->is_online = 0;
+            $user->save();
+        } */
+        if ($usersOnlin) {
+            return $this->SendResponse($usersOnlin , 'suucess all user online' , 200);
+        }
+        return $this->SendResponse($usersOnlin , 'not user online tha user is offline ' , 400);
+    }
+
+
 }

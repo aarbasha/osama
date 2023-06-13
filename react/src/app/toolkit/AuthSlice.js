@@ -49,13 +49,9 @@ export const Logout = createAsyncThunk(
   "auth/Logout",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.post(
-        `${API_URL}/logout`,
-        {},
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post(`${API_URL}/logout`, _, {
+        withCredentials: true,
+      });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -68,6 +64,22 @@ export const UpdateProfile = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${API_URL}/upProfile`, data, {
+        withCredentials: true,
+      });
+
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const setOnline = createAsyncThunk(
+  "auth/setOnline",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${API_URL}/setOnline`, _, {
         withCredentials: true,
       });
       return response.data;
@@ -85,6 +97,7 @@ const initialState = {
   loading: false,
   error: null,
   isAuth: false,
+  isOnline: false,
 };
 
 export const AuthSlice = createSlice({
@@ -190,6 +203,23 @@ export const AuthSlice = createSlice({
       state.loading = false;
       state.status = "failed";
       state.error = actions.payload.message;
+    },
+
+    //Set is Online
+    [setOnline.pending]: (state, actions) => {
+      state.loading = true;
+      state.status = "loading";
+    },
+    [setOnline.fulfilled]: (state, actions) => {
+      state.user = actions.payload;
+      state.loading = false;
+      state.status = "succeeded";
+      state.error = null;
+      state.isOnline = true;
+    },
+    [setOnline.rejected]: (state, actions) => {
+      state.loading = false;
+      state.status = "failed";
     },
   },
 });

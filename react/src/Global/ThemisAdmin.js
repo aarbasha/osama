@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 
+
 const ThemisAdmin = () => {
   const changeBackgroundSudebar = () => {
     let mySidebar = document.querySelector(".sidebar-wrapper");
   };
+  
 
   let myHtml = document.querySelector("#page");
   const ChngedModeColor = () => {
@@ -169,6 +171,14 @@ const ThemisAdmin = () => {
                 </div>
                 <div className="col">
                   <div className="indigator headercolor8" id="headercolor8" />
+                </div>
+              </div>
+
+              <hr />
+              <div className="row d-flex-justify-content-center text-center mt-3">
+                <h3>Users Active </h3>
+                <div className="d-flex">
+                  <div>user online </div>
                 </div>
               </div>
             </div>

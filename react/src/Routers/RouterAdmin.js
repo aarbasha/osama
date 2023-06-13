@@ -37,6 +37,7 @@ import AllPosts from "../components/admin/Posts/AllPosts";
 import EditPosts from "../components/admin/Posts/EditPosts";
 import AddPosts from "../components/admin/Posts/AddPosts";
 import ShowPosts from "../components/admin/Posts/ShowPosts";
+import Users_online from "../components/admin/Users/Users_online";
 
 export const RouterAdmin = () => {
   return [
@@ -70,6 +71,10 @@ export const RouterAdmin = () => {
           element: <Users />,
         },
         {
+          path: "user_online",
+          element: <Users_online />,
+        },
+        {
           path: "add_users",
           element: <Add_Users />,
         },
@@ -81,6 +86,8 @@ export const RouterAdmin = () => {
           path: "edit_users/:id",
           element: <Edit_Users />,
         },
+
+        
       ],
     },
 

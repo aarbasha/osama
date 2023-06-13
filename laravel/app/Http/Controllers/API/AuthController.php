@@ -60,7 +60,10 @@ class AuthController extends Controller
     {
         try {
             if (Auth::attempt($request->only('email', 'password'))) {
-                $user = Auth::user();
+                $user = $request->user();
+                $user->last_seen_at = now();
+                $user->is_online = 1;
+                $user->save();
                 $token = $user->createToken('authToken')->plainTextToken;
                 $cookie = cookie('jwt', $token, 60 * 24);
                 return response()->json([
@@ -80,14 +83,21 @@ class AuthController extends Controller
         }
     }
     //=================================================================================
-    public function profile()
+    public function profile(Request $request)
     {
-        return Auth::user();
+        $user = $request->user();
+        $user->last_seen_at = now();
+        $user->is_online = 1;
+        $user->save();
+        return response()->json($user);
     }
     //=================================================================================
     public function logout(Request $request)
     {
         /*     $cookie = Cookie::forget('jwt'); */
+        $user = $request->user();
+        $user->is_online = 0;
+        $user->save();
         $cookie = cookie('jwt', '', 0, '/', null, false, true); // Clear the cookie
         return response()->json(['message' => 'Logged out successfully'])->withCookie($cookie);
     }
@@ -141,5 +151,27 @@ class AuthController extends Controller
                 return $this->SendResponse($user, 'Success update profile User  ', 200);
             }
         }
+    }
+     public function setOnline(Request $request)
+    {
+        $user = $request->user();
+        $user->last_seen_at = now();
+        $user->is_online = 1;
+        $user->save();
+        return response()->json($user);
+
+    }
+
+    public function online()
+    {
+        // show all users is online
+        $timeout = now()->subMinutes(2);
+        $usersOnlin = User::where('last_seen_at', '>=', $timeout)->get();
+        $usersOffline = User::where('last_seen_at', '<', $timeout)->get();
+        foreach ($usersOffline as $user) {
+            $user->is_online = 0;
+            $user->save();
+        }
+        return response()->json(['online' => $usersOnlin, 'offline' => $usersOffline]);
     }
 }

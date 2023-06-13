@@ -5,6 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { allusers, editUser } from "../../../app/toolkit/UsersSlice";
 import Skeleton from "react-loading-skeleton";
 import DeleteUsers from "./DeleteUsers";
+import Spinner from "react-bootstrap/Spinner";
+import Badge from "react-bootstrap/Badge";
+import { BiBorderRadius } from "react-icons/bi";
 
 const Users = () => {
   const navgate = useNavigate();
@@ -13,6 +16,8 @@ const Users = () => {
   const { users } = useSelector((state) => state.users);
   const { user } = useSelector((state) => state.auth);
 
+  //const now = new Date();
+  // const online = now.setMinutes(now.getMinutes() - 2);
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
@@ -29,7 +34,7 @@ const Users = () => {
     return () => {
       clearInterval(intervalId);
     };
-  }, []); 
+  }, []);
 
   const dispatchEdit = async (id) => {
     await dispatch(editUser(id));
@@ -104,11 +109,11 @@ const Users = () => {
                         <th>Email</th>
                         <th>Phone</th>
                         <th>Status</th>
+                        <th>Status</th>
                         <th>Roles</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
-
                     <tbody className="">
                       {users &&
                         users.map((item) => (
@@ -121,7 +126,6 @@ const Users = () => {
                             key={item.id}
                           >
                             <td>{item.id}</td>
-
                             <td>
                               <img
                                 src={
@@ -136,15 +140,28 @@ const Users = () => {
                               />
                             </td>
                             <td>{item.name}</td>
-
                             <td>{item.username}</td>
-
                             <td>
                               <span className="text-primary p-2">
                                 {item.email}
                               </span>
                             </td>
                             <td>{item.phone}</td>
+                            <td className="">
+                              {item.is_online === 1 ? (
+                                <Spinner animation="grow" variant="success" />
+                              ) : item.is_online === 0 ? (
+                                <div
+                                  className="bg-danger"
+                                  style={{
+                                    width: "25px",
+                                    height: "25px",
+                                    margin: "0 auto",
+                                    borderRadius: "50%",
+                                  }}
+                                ></div>
+                              ) : null}
+                            </td>
 
                             <td>
                               {item.status == "1" ? (
@@ -170,7 +187,6 @@ const Users = () => {
                                 </span>
                               ) : null}
                             </td>
-
                             <td>
                               <div className="d-flex justify-content-around">
                                 <Link

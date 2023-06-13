@@ -31,6 +31,14 @@ const MasterUsers = () => {
             </nav>
           </div>
           <div className="ms-auto">
+          <NavLink
+              to={"/admin/users/user_online"}
+              type="button"
+              className="btn btn-outline-success mx-2"
+            >
+              Online User
+            </NavLink>
+
             <NavLink
               to={"/admin/users/all_users"}
               type="button"

@@ -99,8 +99,24 @@ export const deleteUser = createAsyncThunk(
   }
 );
 
+export const UserOnlineOffline = createAsyncThunk(
+  "users/UserOnlineOffline",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${API_URL}/users/online`, {
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 const initialState = {
   users: [],
+  usersOnline: null,
+  usersOffline: null,
   oldUser: null,
   status: null,
   error: null,
@@ -178,9 +194,26 @@ const UsersSlice = createSlice({
       state.message = actions.payload.message;
     },
     [UpdateUsers.rejected]: (state, actions) => {
-       state.loading = false;
+      state.loading = false;
       state.status = "field";
       state.error = actions.payload.message;
+    },
+
+    // UserOnlineOffline
+
+    [UserOnlineOffline.pending]: (state, actions) => {
+      state.loading = true;
+      state.status = "loading";
+    },
+    [UserOnlineOffline.fulfilled]: (state, actions) => {
+      state.loading = false;
+      state.status = "success";
+      state.usersOnline = actions.payload.online;
+      state.usersOffline = actions.payload.offline;
+    },
+    [UserOnlineOffline.rejected]: (state, actions) => {
+      state.loading = false;
+      state.status = "field";
     },
   },
 });

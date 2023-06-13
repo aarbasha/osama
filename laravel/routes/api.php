@@ -24,6 +24,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('profile', [AuthController::class, 'profile']);
     Route::post('upProfile', [AuthController::class, 'updateProfile']);
+
+    Route::post('setOnline', [AuthController::class, 'setOnline']);
+    Route::get('users/online', [AuthController::class, 'online']);
 });
 
 Route::controller(CategorieController::class)->group(function () {
@@ -65,5 +68,7 @@ Route::controller(UsersController::class)->group(function () {
         Route::post('/up/{id}', 'update');
         // destroy  categories
         Route::delete('/{id}', 'destroy');
+        // get users online
+       // Route::get('/UsersOnline' , 'UsersOnline');
     });
 });

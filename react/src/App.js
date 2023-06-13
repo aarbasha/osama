@@ -5,29 +5,48 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthRefreshToken, AuthLogout } from "./app/toolkit/AuthSlice";
 import Cookies from "js-cookie";
-import { profile } from "./app/toolkit/AuthSlice";
+import { profile  , setOnline} from "./app/toolkit/AuthSlice";
 import offline from "./images/offline.jpg";
+import axios from "axios";
 
 const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
+  const { isAuth } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(profile());
-  }, [dispatch]);
+    if (isAuth) {
+      dispatch(setOnline())
+    }
+   
+  }, []);
 
   const [isOnline, setIsOnline] = useState(window.navigator.onLine);
   useEffect(() => {
     const intervalId = setInterval(() => {
-      // Check the network status
-      setIsOnline(window.navigator.onLine);
+      setIsOnline(window.navigator.onLine); 
     }, 1000);
-
-    // Cleanup the interval when the component is unmounted
     return () => {
       clearInterval(intervalId);
     };
   }, []);
+
+
+/*   useEffect(() => {
+    const intervalId = setInterval(() => {
+      try {
+        const response = axios.post('http://localhost:8000/api/setOnline')
+        console.log(response);
+      } catch (error) {
+        console.log(error)
+      }
+    }, 5000);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []); */
 
   /*  const dispatch = useDispatch();
   const rediract = useNavigate();
