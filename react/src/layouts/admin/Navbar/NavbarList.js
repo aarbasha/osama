@@ -11,9 +11,6 @@ const NavbarList = () => {
   const { isAuth } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  console.log(user.avatar);
-
   const logout = () => {
     Cookies.remove("jwt");
     dispatch(Logout());

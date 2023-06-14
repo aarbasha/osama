@@ -7,6 +7,7 @@ use App\Mail\AuthMail;
 use App\Mail\WelcomeEmail;
 use Illuminate\Http\Request;
 use App\Http\Traits\GlobalTraits;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -42,10 +43,9 @@ class AuthController extends Controller
             'name' => $request->name,
             'username' => $request->username,
             'email' => trim($request->email),
-            'password' => bcrypt($request->password)
+            'password' => bcrypt($request->password),
+            'last_seen_at' => now() // adation ....
         ]);
-
-
 
         if ($user) {
 
@@ -152,20 +152,19 @@ class AuthController extends Controller
             }
         }
     }
-     public function setOnline(Request $request)
+    public function setOnline(Request $request)
     {
         $user = $request->user();
         $user->last_seen_at = now();
         $user->is_online = 1;
         $user->save();
         return response()->json($user);
-
     }
 
     public function online()
     {
         // show all users is online
-        $timeout = now()->subMinutes(2);
+        $timeout = now()->subMinutes(1);
         $usersOnlin = User::where('last_seen_at', '>=', $timeout)->get();
         $usersOffline = User::where('last_seen_at', '<', $timeout)->get();
         foreach ($usersOffline as $user) {
@@ -173,5 +172,12 @@ class AuthController extends Controller
             $user->save();
         }
         return response()->json(['online' => $usersOnlin, 'offline' => $usersOffline]);
+    }
+
+    public function test()
+    {
+        $count = user::count();
+        return $count;
+
     }
 }

@@ -31,7 +31,7 @@ const MasterUsers = () => {
             </nav>
           </div>
           <div className="ms-auto">
-          <NavLink
+            <NavLink
               to={"/admin/users/user_online"}
               type="button"
               className="btn btn-outline-success mx-2"
@@ -55,7 +55,7 @@ const MasterUsers = () => {
               Add User
             </NavLink>
 
-           {/*  <div className="d-flex flex-row-reverse">
+            {/*  <div className="d-flex flex-row-reverse">
               <button
                 className="btn btn-danger m-3"
                 onClick={() => Rediract(-1)}

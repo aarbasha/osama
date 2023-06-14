@@ -5,6 +5,9 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { profile } from "../../../app/toolkit/AuthSlice";
 import { UserOnlineOffline } from "../../../app/toolkit/UsersSlice";
+import Time from "../../../Global/Time";
+import moment from "moment";
+import Spinner from "react-bootstrap/esm/Spinner";
 
 const Users_online = () => {
   const dispatch = useDispatch();
@@ -12,26 +15,15 @@ const Users_online = () => {
   const { isAuth } = useSelector((state) => state.auth);
   const { usersOnline, usersOffline } = useSelector((state) => state.users);
 
-  const [usersMapOnline, setUsersMapOnline] = useState();
-  const [usersMapOffline, setUsersMapOffline] = useState();
-  /*  useEffect(() => {
-    dispatch(profile());
-  }, []); */
 
   useEffect(() => {
-    dispatch(UserOnlineOffline());
-  /*   const interval = setInterval(() => {
-    
-    }, 60000); // Refresh the list of online users every 10 seconds
-    return () => clearInterval(interval); */
+    const interval = setInterval(() => {
+      dispatch(UserOnlineOffline());
+    }, 1000); // Refresh the list of online users every 10 seconds
+    return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    setUsersMapOnline(usersOnline);
-    setUsersMapOffline(usersOffline);
-    console.log(usersOnline);
-    console.log(usersOffline);
-  }, []);
+
 
   return (
     <FadeOutAnimation>
@@ -79,17 +71,167 @@ const Users_online = () => {
         </div>
         <div className="card-body">
           <div>
-            <div className="row justify-content-around">
-              {usersMapOnline
-                ? usersMapOnline.map((item) => {
-                    <div className="">{item.name}</div>;
-                  })
-                : 
+            {loading ? (
+              <Skeleton
+                count={1}
+                style={{
+                  width: "100%",
+                  height: "250px",
+                  margin: "5px",
+                }}
+              />
+            ) : (
+              <>
+                {/*              <div className="row d-flex">
+                  {usersOffline &&
+                    usersOffline.map((item) => (
+                      <div
+                        className="card  mx-5 col-4 "
+                        style={{ width: "300px", height: "400px" }}
+                        key={item.id}
+                      >
+                        <img
+                          className="card-img-top"
+                          src={
+                            item.avatar === "null"
+                              ? `https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y`
+                              : `http://localhost:8000/photo/${item.avatar}`
+                          }
+                          alt="Card image cap"
+                          style={{
+                            width: "150px",
+                            height: "150px",
+                            margin: "0 auto",
+                            borderRadius: "50%",
+                          }}
+                        />
+                        <div className="card-body  text-center">
+                          <h5 className="card-title">{item.name}</h5>
+                          <p className="card-text">
+                            {moment.unix(Time(item.last_seen_at)).fromNow()}
+                          </p>
+                          <p>
+                            {item.status == "1" ? (
+                              <span className="bg-success rounded-50 p-2">
+                                Active
+                              </span>
+                            ) : item.status == "0" ? (
+                              <span className="bg-danger p-2 text-white">
+                                Not Active
+                              </span>
+                            ) : null}
+                          </p>
+                          <p>
+                            {item.roles == "2" ? (
+                              <span className="bg-primary p-2 text-white">
+                                User
+                              </span>
+                            ) : item.roles == "1" ? (
+                              <span className="bg-warning p-2">Admin</span>
+                            ) : item.roles == "0" ? (
+                              <span className="bg-dark p-2 text-white">
+                                Mangers
+                              </span>
+                            ) : null}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                </div> */}
 
-                <Skeleton count={10} />
-                
-                }
-            </div>
+                <div className="row d-flex">
+                  {usersOnline &&
+                    usersOnline.map((item) => (
+                      <div
+                        className="card  mx-5 col-4 "
+                        style={{ width: "300px", height: "400px" }}
+                        key={item.id}
+                      >
+                        <img
+                          className="card-img-top"
+                          src={
+                            item.avatar === "null"
+                              ? `https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y`
+                              : `http://localhost:8000/photo/${item.avatar}`
+                          }
+                          alt="Card image cap"
+                          style={{
+                            width: "100px",
+                            height: "100px",
+                            margin: "0 auto",
+                            borderRadius: "50%",
+                          }}
+                        />
+                        <div className="card-body  text-center">
+                          <h5 className="card-title">{item.name}</h5>
+                          <p className="card-text">
+                            {moment.unix(Time(item.last_seen_at)).fromNow()}
+                          </p>
+                          <p>
+                            {item.status == "1" ? (
+                              <span className="bg-success rounded-50 p-2">
+                                Active
+                              </span>
+                            ) : item.status == "0" ? (
+                              <span className="bg-danger p-2 text-white">
+                                Not Active
+                              </span>
+                            ) : null}
+                          </p>
+                          <p>
+                            {item.is_online === 1 ? (
+                              <Spinner animation="grow" variant="success" />
+                            ) : null}
+                          </p>
+                          <p>
+                            {item.roles == "2" ? (
+                              <span className="bg-primary p-2 text-white">
+                                User
+                              </span>
+                            ) : item.roles == "1" ? (
+                              <span className="bg-warning p-2">Admin</span>
+                            ) : item.roles == "0" ? (
+                              <span className="bg-dark p-2 text-white">
+                                Mangers
+                              </span>
+                            ) : null}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+
+                <nav className={"float-end mt-3"}>
+                  <ul className="pagination">
+                    <li className="page-item disabled">
+                      <a className="page-link" href="#">
+                        Previous
+                      </a>
+                    </li>
+                    <li className="page-item active">
+                      <a className="page-link" href="#">
+                        1
+                      </a>
+                    </li>
+                    <li className="page-item">
+                      <a className="page-link" href="#">
+                        2
+                      </a>
+                    </li>
+                    <li className="page-item">
+                      <a className="page-link" href="#">
+                        3
+                      </a>
+                    </li>
+                    <li className="page-item">
+                      <a className="page-link" href="#">
+                        Next
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </>
+            )}
           </div>
         </div>
       </div>

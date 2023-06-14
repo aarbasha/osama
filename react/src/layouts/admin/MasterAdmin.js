@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
-// import BackToTopAdmin from './BackToTopAdmin'
 import ThemisAdmin from "../../Global/ThemisAdmin";
 import NavbarLinkItems from "./Navbar/NavbarLinkItems";
 import NavbarSerch from "./Navbar/NavbarSerch";
@@ -8,26 +7,12 @@ import NavbarList from "./Navbar/NavbarList";
 import SidebarTabs from "./Sidebar/SidebarTabs";
 import SidebarContent from "./Sidebar/SidebarContent";
 import Logo from "../../images/brand-logo-2.png";
-import { useDispatch, useSelector } from "react-redux";
-import { setOnline } from "../../app/toolkit/AuthSlice";
 
 const MasterAdmin = () => {
   const [isActive, setIsActive] = useState(false);
   const handleClick = (event) => {
     setIsActive((current) => !current);
   };
-  const dispatch = useDispatch();
-  const { isAuth } = useSelector((state) => state.auth);
-  useEffect(() => {
-    if (isAuth == true) {
-      const intervalId = setInterval(() => {
-        dispatch(setOnline())
-      }, 60000);
-      return () => {
-        clearInterval(intervalId);
-      };
-    }
-  }, []);
 
   return (
     <>

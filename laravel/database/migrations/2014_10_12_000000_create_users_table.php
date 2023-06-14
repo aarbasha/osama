@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('roles')->nullable()->default('2'); //user
             $table->boolean('status')->nullable()->default(true);//active
             $table->boolean('is_online')->nullable()->default(0);
-            $table->timestamp('last_seen_at')->nullable();
+            $table->timestamp('last_seen_at')->nullable()->default(now());
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

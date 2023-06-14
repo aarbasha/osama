@@ -32,26 +32,15 @@ const Edit_Users = () => {
     status: "",
   });
 
-/*   useEffect(() => {
-    const intervalId = setInterval(() => {
-      dispatch(editUser(id));
-      //setInputs(oldUser);
-    }, 5000);
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []); */
-
-
   useEffect(() => {
+    async function dispatchFunction() {
+      const response = await dispatch(editUser(id));
+      setTimeout(() => {
+        setInputs(oldUser);
+      }, 1000);
    
-    async function dispatchFunction(){
-      const response = await dispatch(editUser(id))
-
-      setInputs(oldUser);
     }
-    dispatchFunction()
-    
+    dispatchFunction();
     setLoadingInput(true);
     setTimeout(() => {
       setLoadingInput(false);
@@ -70,7 +59,7 @@ const Edit_Users = () => {
   const handelChangeInputs = async (e) => {
     const name = e.target.name;
     const value = e.target.value;
-   await setInputs((values) => ({ ...values, [name]: value }));
+    await setInputs((values) => ({ ...values, [name]: value }));
   };
   const handelChangeAvatar = (e) => {
     setAvatar({ avatar: e.target.files[0] });
@@ -133,7 +122,7 @@ const Edit_Users = () => {
                       type="text"
                       name="name"
                       onChange={handelChangeInputs}
-                      value={inputs.name}
+                      value={inputs?.name}
                       className="form-control"
                       placeholder="Enter Name"
                       required
@@ -150,7 +139,7 @@ const Edit_Users = () => {
                       type="text"
                       name="username"
                       onChange={handelChangeInputs}
-                      value={inputs.username}
+                      value={inputs?.username}
                       className="form-control"
                       placeholder="Enter username"
                       required
@@ -167,7 +156,7 @@ const Edit_Users = () => {
                       type="text"
                       name="email"
                       onChange={handelChangeInputs}
-                      value={inputs.email}
+                      value={inputs?.email}
                       className="form-control"
                       placeholder="Enter Email"
                       required
@@ -184,7 +173,7 @@ const Edit_Users = () => {
                       type="text"
                       name="phone"
                       onChange={handelChangeInputs}
-                      value={inputs.phone}
+                      value={inputs?.phone}
                       className="form-control"
                       placeholder="Enter Phone"
                       required
@@ -204,7 +193,7 @@ const Edit_Users = () => {
                       placeholder="Enter Password"
                       name="password"
                       id="password"
-                      value={Checked ? inputs.password : null}
+                      value={Checked ? inputs?.password : null}
                       disabled={Checked}
                       onChange={handelChangechecked}
                     />
@@ -234,7 +223,7 @@ const Edit_Users = () => {
                       className="form-select"
                       name="status"
                       onChange={handelChangeInputs}
-                      value={inputs.status}
+                      value={inputs?.status}
                     >
                       <option>select status</option>
                       <option value="1">Active</option>
@@ -253,7 +242,7 @@ const Edit_Users = () => {
                       className="form-select"
                       name="roles"
                       onChange={handelChangeInputs}
-                      value={inputs.roles}
+                      value={inputs?.roles}
                     >
                       <option>select rouls</option>
 
@@ -307,9 +296,9 @@ const Edit_Users = () => {
                     <>
                       <img
                         src={
-                          inputs.avatar === "null"
+                          inputs?.avatar === "null"
                             ? `https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y`
-                            : `http://localhost:8000/photo/${inputs.avatar}`
+                            : `http://localhost:8000/photo/${inputs?.avatar}`
                         }
                         className="mx-5 rounded-circle shadow"
                         style={{ width: "100px", height: "100px" }}

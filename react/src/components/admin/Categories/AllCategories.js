@@ -17,43 +17,49 @@ const AllCategories = () => {
   const [pageCount, setPageCount] = useState(0);
 
   useEffect(() => {
+
+    const interval = setInterval(() => {
+      dispatch(All_Categories(current_page));
+    }, 10000);
+
     setLoading(true);
     setPageCount(Math.ceil(total / per_page));
-    Pagination()
+    Pagination();
     setTimeout(() => {
       dispatch(All_Categories(current_page));
       setLoading(false);
+      return clearInterval(interval)
     }, 500);
   }, [dispatch, current_page]);
 
-  const Pagination =  () =>{
+  const Pagination = () => {
     return (
-       <ReactPaginate
-            breakLabel="***"
-            nextLabel="next >>>"
-            onPageChange={handlePageClick}
-            pageRangeDisplayed={per_page}
-            marginPagesDisplayed={5}
-            pageCount={pageCount} //total
-            previousLabel="<<< previous"
-            renderOnZeroPageCount={null}
-            containerClassName="pagination rounded "
-            pageClassName="page-item"
-            pageLinkClassName="page-link"
-            previousClassName="page-item"
-            previousLinkClassName="page-link"
-            nextClassName="page-item"
-            nextLinkClassName="page-link"
-            breakClassName="page-item"
-            breakLinkClassName="page-link"
-            activeClassName="active"
-          />
-    )
-  }
+      <ReactPaginate
+        breakLabel="***"
+        nextLabel="next >>>"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={per_page}
+        marginPagesDisplayed={5}
+        pageCount={pageCount} //total
+        previousLabel="<<< previous"
+        renderOnZeroPageCount={null}
+        containerClassName="pagination rounded "
+        pageClassName="page-item"
+        pageLinkClassName="page-link"
+        previousClassName="page-item"
+        previousLinkClassName="page-link"
+        nextClassName="page-item"
+        nextLinkClassName="page-link"
+        breakClassName="page-item"
+        breakLinkClassName="page-link"
+        activeClassName="active"
+      />
+    );
+  };
 
   const handlePageClick = async (e) => {
     let current_page = e.selected + 1;
-   await dispatch(All_Categories(current_page));
+    await dispatch(All_Categories(current_page));
   };
 
   const handelChangeSelect = (e) => {

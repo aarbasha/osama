@@ -1,11 +1,23 @@
-import React, { useEffect } from "react";
-
-
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { UserOnlineOffline } from "../app/toolkit/UsersSlice";
+import Spinner from "react-bootstrap/esm/Spinner";
 const ThemisAdmin = () => {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const { isAuth } = useSelector((state) => state.auth);
+  const { usersOnline, usersOffline } = useSelector((state) => state.users);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      dispatch(UserOnlineOffline());
+    }, 1000); // Refresh the list of online users every 10 seconds
+    return () => clearInterval(interval);
+  }, []);
+
   const changeBackgroundSudebar = () => {
     let mySidebar = document.querySelector(".sidebar-wrapper");
   };
-  
 
   let myHtml = document.querySelector("#page");
   const ChngedModeColor = () => {
@@ -175,10 +187,45 @@ const ThemisAdmin = () => {
               </div>
 
               <hr />
-              <div className="row d-flex-justify-content-center text-center mt-3">
-                <h3>Users Active </h3>
-                <div className="d-flex">
-                  <div>user online </div>
+              <div className="row d-flex justify-content-center text-center mt-3">
+                {isAuth ? <h3>Users Active </h3> : null}
+
+                <div className="d-flex flex-column">
+                  {usersOnline &&
+                    usersOnline.map((item) => (
+                      <div
+                        key={item.id}
+                        className=" my-2   d-flex justify-content-start "
+                      >
+                        <div className="mr-auto">
+                          <img
+                            className="card-img-top "
+                            src={
+                              item.avatar === "null"
+                                ? `https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y`
+                                : `http://localhost:8000/photo/${item.avatar}`
+                            }
+                            alt="Card image cap"
+                            style={{
+                              width: "40px",
+                              height: "40px",
+                              margin: "0 auto",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </div>
+
+                        <div className="d-flex align-items-end">
+                          <div className="h5 mx-3"> {item.name}</div>
+
+                          <div className="ml-auto ">
+                            {item.is_online === 1 ? (
+                              <Spinner animation="grow" variant="success" />
+                            ) : null}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                 </div>
               </div>
             </div>

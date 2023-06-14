@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthRefreshToken, AuthLogout } from "./app/toolkit/AuthSlice";
 import Cookies from "js-cookie";
-import { profile  , setOnline} from "./app/toolkit/AuthSlice";
+import { profile, setOnline } from "./app/toolkit/AuthSlice";
 import offline from "./images/offline.jpg";
 import axios from "axios";
 
@@ -18,23 +18,22 @@ const App = () => {
   useEffect(() => {
     dispatch(profile());
     if (isAuth) {
-      dispatch(setOnline())
+      dispatch(setOnline());
     }
-   
   }, []);
 
   const [isOnline, setIsOnline] = useState(window.navigator.onLine);
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setIsOnline(window.navigator.onLine); 
+      setIsOnline(window.navigator.onLine);
+      dispatch(setOnline());
     }, 1000);
     return () => {
       clearInterval(intervalId);
     };
   }, []);
 
-
-/*   useEffect(() => {
+  /*   useEffect(() => {
     const intervalId = setInterval(() => {
       try {
         const response = axios.post('http://localhost:8000/api/setOnline')

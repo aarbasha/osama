@@ -3,20 +3,26 @@ import React, { useState } from "react";
  */
 import { BiFullscreen } from "react-icons/bi";
 import { BiExitFullscreen } from "react-icons/bi";
+import { useSelector, useDispatch } from "react-redux";
+import {SetFullScreen , OutFullscreen }  from './../app/toolkit/GlobalSlice'
+
 
 const FullScreenBtn = () => {
-  const [isActive, setIsActive] = useState(true);
+  const { fullScreen } = useSelector((state) => state.global);
+  const dispatch = useDispatch()
+
   const myDocoument = document.documentElement;
   const fullscreenR = myDocoument.requestFullscreen;
   const fullscreenE = document.exitFullscreen;
+
   const handleClickFull = (e) => {
     if (fullscreenR) {
       myDocoument.requestFullscreen();
-      setIsActive((e) => isActive);
+      dispatch(SetFullScreen(e))
     }
     if (fullscreenE) {
       document.exitFullscreen();
-      setIsActive((e) => !isActive);
+      dispatch(OutFullscreen(e))
     }
   };
   return (
@@ -26,12 +32,11 @@ const FullScreenBtn = () => {
           <i
             id="fullscreenFull"
             className={
-              isActive
+              !fullScreen
                 ? "rounded-circle mx-2 btn-sm btn btn-success m-1 bi-fullscreen"
                 : "rounded-circle mx-2 btn-sm  btn btn-danger m-1  bi bi-fullscreen-exit"
             }
-          >
-          </i>
+          ></i>
         </>
       </div>
     </div>

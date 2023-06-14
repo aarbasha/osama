@@ -4,10 +4,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { UpdateProfile } from "../../app/toolkit/AuthSlice";
 import Spinner from "react-bootstrap/Spinner";
 import { toastError, toastSuccess } from "../../Global/ToastContainer";
-
+import moment from "moment";
+import Time from "../../Global/Time";
+import { useNavigate } from "react-router-dom";
+import SetOnline from "../../Global/SetOnline";
 const AdminProfile = () => {
+  const Rediract = useNavigate();
   const dispatch = useDispatch();
-  const { user, status, message } = useSelector((state) => state.auth);
+  const { user, status, message, isOnline } = useSelector(
+    (state) => state.auth
+  );
   const [loading, setLoading] = useState(false);
   const [inputs, setInputs] = useState({
     name: "",
@@ -47,6 +53,7 @@ const AdminProfile = () => {
 
   useEffect(() => {
     setInputs(user);
+    <SetOnline />;
   }, []);
 
   const updateProfile = (e) => {
@@ -63,7 +70,7 @@ const AdminProfile = () => {
     if (Checked === false) {
       data.append("password", inputs.password);
     }
- 
+
     setLoading(true);
     setTimeout(() => {
       dispatch(UpdateProfile(data));
@@ -257,7 +264,12 @@ const AdminProfile = () => {
                       )}
                     </button>
 
-                    <button className="btn btn-danger px-4 mx-2">Back</button>
+                    <button
+                      onClick={() => Rediract(-1)}
+                      className="btn btn-danger px-4 mx-2"
+                    >
+                      Back
+                    </button>
                   </div>
                 </form>
               </div>
@@ -279,7 +291,7 @@ const AdminProfile = () => {
                 ) : (
                   <img
                     src={
-                      user.avatar === 'null'
+                      user.avatar === "null"
                         ? `https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y`
                         : `http://localhost:8000/photo/${inputs.avatar}`
                     }
@@ -305,14 +317,31 @@ const AdminProfile = () => {
                 </div>
               </div>
               <div
-                className="d-flex align-items-center justify-content-around mt-5 gap-3"
+                className="d-flex justify-content-around mt-5"
                 style={{ height: "200px" }}
               >
-                loading kdjlasdj djaskdljalsd djskdjaldja djsakdjsladj dkasjdlsa
-                loading kdjlasdj djaskdljalsd djskdjaldja djsakdjsladj dkasjdlsa
-                loading kdjlasdj djaskdljalsd djskdjaldja djsakdjsladj dkasjdlsa
-                loading kdjlasdj djaskdljalsd djskdjaldja djsakdjsladj dkasjdlsa
-                loading kdjlasdj djaskdljalsd djskdjaldja djsakdjsladj dkasjdlsa
+                {user?.is_online === 1 ? (
+                  <div className="d-flex flex-column">
+                    <div className="h3 text-center">
+                      {" "}
+                      <Spinner
+                        animation="grow"
+                        className=""
+                        variant="success"
+                      />{" "}
+                      Online
+                    </div>
+                    <hr />
+                    <div className="h5 text-center">
+                      {moment.unix(Time(user?.last_seen_at)).fromNow()}
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <Spinner animation="grow" variant="success" />
+                    <span className=" text-center">offline</span>
+                  </>
+                )}
               </div>
             </div>
           </div>

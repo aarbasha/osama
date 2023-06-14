@@ -6,8 +6,8 @@ import { allusers, editUser } from "../../../app/toolkit/UsersSlice";
 import Skeleton from "react-loading-skeleton";
 import DeleteUsers from "./DeleteUsers";
 import Spinner from "react-bootstrap/Spinner";
-import Badge from "react-bootstrap/Badge";
-import { BiBorderRadius } from "react-icons/bi";
+import moment from "moment";
+import Time from "../../../Global/Time";
 
 const Users = () => {
   const navgate = useNavigate();
@@ -16,8 +16,6 @@ const Users = () => {
   const { users } = useSelector((state) => state.users);
   const { user } = useSelector((state) => state.auth);
 
-  //const now = new Date();
-  // const online = now.setMinutes(now.getMinutes() - 2);
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
@@ -30,7 +28,7 @@ const Users = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       dispatch(allusers());
-    }, 5000);
+    }, 3000);
     return () => {
       clearInterval(intervalId);
     };
@@ -108,6 +106,7 @@ const Users = () => {
                         <th>Username</th>
                         <th>Email</th>
                         <th>Phone</th>
+                        <th>Last Seen</th>
                         <th>Status</th>
                         <th>Status</th>
                         <th>Roles</th>
@@ -120,7 +119,7 @@ const Users = () => {
                           <tr
                             className={
                               user.id === item.id
-                                ? "text-center  bg-info"
+                                ? "text-center  bg-secondary text-white font-weight-bold"
                                 : "text-center"
                             }
                             key={item.id}
@@ -147,6 +146,9 @@ const Users = () => {
                               </span>
                             </td>
                             <td>{item.phone}</td>
+                            <td>
+                              {moment.unix(Time(item.last_seen_at)).fromNow()}
+                            </td>
                             <td className="">
                               {item.is_online === 1 ? (
                                 <Spinner animation="grow" variant="success" />
