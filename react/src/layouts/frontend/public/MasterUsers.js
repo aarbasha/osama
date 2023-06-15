@@ -6,9 +6,9 @@ import ThemisAdmin from "../../../Global/ThemisAdmin";
 import SetOnline from "../../../Global/SetOnline";
 
 const MasterUsers = () => {
-  useEffect(() => {
+/*   useEffect(() => {
     <SetOnline />;
-  }, []);
+  }, []); */
 
   return (
     <>

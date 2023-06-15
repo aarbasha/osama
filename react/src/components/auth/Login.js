@@ -26,7 +26,7 @@ const Login = () => {
     setInputs((values) => ({ ...values, [name]: value }));
   };
 
-  const LoginSubmit = (e) => {
+  const LoginSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setTimeout(() => {

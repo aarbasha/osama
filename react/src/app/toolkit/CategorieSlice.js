@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { toastError, toastSuccess } from "../../Global/ToastContainer";
 
 const API_URL = "http://localhost:8000/api";
 
@@ -118,12 +117,9 @@ export const updateCategories = createAsyncThunk(
           withCredentials: true,
         }
       );
-
       if (response.data.status === 200) {
-        toastSuccess(response.data.message);
         return response.data;
       } else {
-        toastError(response.data.message);
         return rejectWithValue(response.data.message);
       }
     } catch (error) {
@@ -148,7 +144,12 @@ const initialState = {
 export const CategorieSlice = createSlice({
   name: "categorie",
   initialState,
-  reducers: {},
+  reducers: {
+    updateCurrentPage: (state, action) => {
+      console.log(action.payload);
+      state.current_page = action.payload;
+    },
+  },
   extraReducers: {
     [Categories.pending]: (state, actions) => {
       state.status = "pending";
@@ -279,5 +280,8 @@ export const CategorieSlice = createSlice({
     },
   },
 });
+
+export const { updateCurrentPage  } = CategorieSlice.actions
+
 
 export default CategorieSlice.reducer;

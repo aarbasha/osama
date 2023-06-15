@@ -28,7 +28,7 @@ const Users = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       dispatch(allusers());
-    }, 3000);
+    }, 6000);
     return () => {
       clearInterval(intervalId);
     };
@@ -86,14 +86,7 @@ const Users = () => {
         <div className="card-body">
           <div>
             {loading ? (
-              <Skeleton
-                count={1}
-                style={{
-                  width: "100%",
-                  height: "250px",
-                  margin: "5px",
-                }}
-              />
+              <Skeleton count={15} />
             ) : (
               <>
                 <div className={"table-responsive"}>

@@ -9,7 +9,7 @@ const SetOnline = () => {
     if (isAuth == true) {
       const intervalId = setInterval(() => {
         dispatch(setOnline());
-      }, 3000);
+      }, 60000);
       return clearInterval(intervalId);
     }
   }, []);

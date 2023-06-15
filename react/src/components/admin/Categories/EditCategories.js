@@ -3,6 +3,7 @@ import FadeOutAnimation from "../../../Animation/FadeOutAnimation";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  All_Categories,
   Categories,
   editCategories,
   updateCategories,
@@ -16,7 +17,7 @@ const EditCategories = () => {
   const rediract = useNavigate();
   const Location = useLocation();
   const dispatch = useDispatch();
-  const { all_categories, old_categories, error, status, message } =
+  const { all_categories, old_categories, error, status, current_page } =
     useSelector((state) => state.categories);
   const { user } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
@@ -34,7 +35,7 @@ const EditCategories = () => {
   useEffect(() => {
     setLoadingInput(true);
     dispatch(editCategories(id));
-    dispatch(Categories());
+    dispatch(All_Categories(current_page));
     setTimeout(() => {
       setInputs(old_categories);
       setLoadingInput(false);
@@ -74,12 +75,14 @@ const EditCategories = () => {
       data.append("parent_id", inputs.parent_id);
     }
 
-   await dispatch(updateCategories({ data: data, id: id }));
+    await dispatch(updateCategories({ data: data, id: id }));
     setLoading(true);
     setTimeout(() => {
       if (status === 200) {
+        toastSuccess("success update");
         rediract("/admin/categories/all_categories");
       } else {
+        toastError("error update ");
         rediract(Location.pathname);
       }
       setLoading(false);

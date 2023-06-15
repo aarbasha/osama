@@ -4,12 +4,11 @@ import React, { useState } from "react";
 import { BiFullscreen } from "react-icons/bi";
 import { BiExitFullscreen } from "react-icons/bi";
 import { useSelector, useDispatch } from "react-redux";
-import {SetFullScreen , OutFullscreen }  from './../app/toolkit/GlobalSlice'
-
+import { SetFullScreen, OutFullscreen } from "./../app/toolkit/GlobalSlice";
 
 const FullScreenBtn = () => {
   const { fullScreen } = useSelector((state) => state.global);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const myDocoument = document.documentElement;
   const fullscreenR = myDocoument.requestFullscreen;
@@ -18,11 +17,11 @@ const FullScreenBtn = () => {
   const handleClickFull = (e) => {
     if (fullscreenR) {
       myDocoument.requestFullscreen();
-      dispatch(SetFullScreen(e))
+      dispatch(SetFullScreen(e));
     }
     if (fullscreenE) {
       document.exitFullscreen();
-      dispatch(OutFullscreen(e))
+      dispatch(OutFullscreen(e));
     }
   };
   return (
@@ -31,11 +30,13 @@ const FullScreenBtn = () => {
         <>
           <i
             id="fullscreenFull"
-            className={
-              !fullScreen
-                ? "rounded-circle mx-2 btn-sm btn btn-success m-1 bi-fullscreen"
-                : "rounded-circle mx-2 btn-sm  btn btn-danger m-1  bi bi-fullscreen-exit"
-            }
+            className={`rounded-circle mx-2 btn-sm m-1 '
+              ${
+                fullScreen
+                  ? " btn btn-success bi-fullscreen"
+                  : " btn btn-danger bi bi-fullscreen-exit"
+              }
+            `}
           ></i>
         </>
       </div>

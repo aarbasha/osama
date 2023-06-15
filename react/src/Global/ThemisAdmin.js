@@ -11,15 +11,18 @@ const ThemisAdmin = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       dispatch(UserOnlineOffline());
-    }, 1000); // Refresh the list of online users every 10 seconds
+    }, 1000);
+    SaveMode();
     return () => clearInterval(interval);
-  }, []);
+  }, [dispatch , isAuth]);
 
   const changeBackgroundSudebar = () => {
     let mySidebar = document.querySelector(".sidebar-wrapper");
   };
 
   let myHtml = document.querySelector("#page");
+
+  
   const ChngedModeColor = () => {
     myHtml.removeAttribute("class");
     myHtml.setAttribute("class", "semi-dark");
@@ -62,9 +65,6 @@ const ThemisAdmin = () => {
     }
   };
 
-  useEffect(() => {
-    SaveMode();
-  });
 
   return (
     <>
@@ -188,9 +188,10 @@ const ThemisAdmin = () => {
 
               <hr />
               <div className="row d-flex justify-content-center text-center mt-3">
-                {isAuth ? <h3>Users Active </h3> : null}
-
+                {isAuth ? 
+               
                 <div className="d-flex flex-column">
+                <h3>Users Active </h3>
                   {usersOnline &&
                     usersOnline.map((item) => (
                       <div
@@ -227,6 +228,11 @@ const ThemisAdmin = () => {
                       </div>
                     ))}
                 </div>
+
+                :
+                null
+              }
+
               </div>
             </div>
           </div>

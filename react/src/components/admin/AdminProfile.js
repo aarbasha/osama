@@ -56,7 +56,7 @@ const AdminProfile = () => {
     <SetOnline />;
   }, []);
 
-  const updateProfile = (e) => {
+  const updateProfile = async (e) => {
     e.preventDefault();
 
     const data = new FormData();
@@ -71,10 +71,9 @@ const AdminProfile = () => {
       data.append("password", inputs.password);
     }
 
+   await dispatch(UpdateProfile(data));
     setLoading(true);
     setTimeout(() => {
-      dispatch(UpdateProfile(data));
-
       if (status === "succeeded") {
         toastSuccess("success update my profile");
       } else {

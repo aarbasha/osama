@@ -21,56 +21,58 @@ use App\Http\Controllers\API\UsersController;
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('logout', [AuthController::class, 'logout']);
-    Route::get('profile', [AuthController::class, 'profile']);
-    Route::post('upProfile', [AuthController::class, 'updateProfile']);
 
-    Route::post('setOnline', [AuthController::class, 'setOnline']);
-    Route::get('users/online', [AuthController::class, 'online']);
+    Route::controller(AuthController::class)->group(function () {
+        Route::post('logout', [AuthController::class, 'logout']);
+        Route::get('profile', [AuthController::class, 'profile']);
+        Route::post('upProfile', [AuthController::class, 'updateProfile']);
 
-    Route::get('test' , [AuthController::class, 'test']);
-});
+        Route::post('setOnline', [AuthController::class, 'setOnline']);
+        Route::get('users/online', [AuthController::class, 'online']);
 
-Route::controller(CategorieController::class)->group(function () {
-
-    Route::prefix('categories')->group(function () {
-        Route::get('/categories', 'categories');
-        //all categories with pagination *
-        Route::get('/all', 'index');
-        //all Main categories *
-        Route::get('/sub', 'subCategory');
-        // single categories
-        Route::get('/{id}', 'categorie');
-        // single sub categories
-        Route::get('/sub/{id}', 'subCategorie');
-        // create categories *
-        Route::post('/add', 'store');
-        // create sub categories *
-        Route::post('/addsub', 'storeSubCategories');
-        // Update categories
-        Route::post('/up/{id}', 'update');
-        // destroy  categories
-        Route::delete('/{id}', 'destroy');
-
-        Route::get('test', 'creteFoldersInPublic');
+        Route::get('test', [AuthController::class, 'test']);
     });
-});
 
 
-Route::controller(UsersController::class)->group(function () {
 
-    Route::prefix('users')->group(function () {
-        //all users *
-        Route::get('/all', 'users');
-        //show single user  *
-        Route::get('/{id}', 'user');
-        // create user*
-        Route::post('/add', 'store');
-        // Update categories
-        Route::post('/up/{id}', 'update');
-        // destroy  categories
-        Route::delete('/{id}', 'destroy');
-        // get users online
 
+    Route::controller(UsersController::class)->group(function () {
+        Route::prefix('users')->group(function () {
+            //all users *
+            Route::get('/all', 'users');
+            //show single user  *
+            Route::get('/{id}', 'user');
+            // create user*
+            Route::post('/add', 'store');
+            // Update categories
+            Route::post('/up/{id}', 'update');
+            // destroy  categories
+            Route::delete('/{id}', 'destroy');
+            // get users online
+        });
+    });
+
+    Route::controller(CategorieController::class)->group(function () {
+        Route::prefix('categories')->group(function () {
+            Route::get('/categories', 'categories');
+            //all categories with pagination *
+            Route::get('/all', 'index');
+            //all Main categories *
+            Route::get('/sub', 'subCategory');
+            // single categories
+            Route::get('/{id}', 'categorie');
+            // single sub categories
+            Route::get('/sub/{id}', 'subCategorie');
+            // create categories *
+            Route::post('/add', 'store');
+            // create sub categories *
+            Route::post('/addsub', 'storeSubCategories');
+            // Update categories
+            Route::post('/up/{id}', 'update');
+            // destroy  categories
+            Route::delete('/{id}', 'destroy');
+
+            Route::get('test', 'creteFoldersInPublic');
+        });
     });
 });

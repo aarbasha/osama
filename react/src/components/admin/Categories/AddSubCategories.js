@@ -20,7 +20,6 @@ const AddSubCategories = () => {
 
   useEffect(() => {
     dispatch(Categories());
-
     setErrors(null);
   }, []);
 
@@ -52,7 +51,7 @@ const AddSubCategories = () => {
     setCoverPreview(null);
   };
 
-  const add_subcategories = (e) => {
+  const add_subcategories = async (e) => {
     e.preventDefault();
     const data = new FormData();
     data.append("name", inputs.name);
@@ -63,9 +62,9 @@ const AddSubCategories = () => {
     data.append("cover", cover.cover);
 
     setLoading(true);
-    setTimeout(() => {
-      dispatch(add_subCategories(data));
 
+    await dispatch(add_subCategories(data));
+    setTimeout(() => {
       if (status !== "filed") {
         toastSuccess(message);
         rediract("/admin/categories/all_categories");

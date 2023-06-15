@@ -13,14 +13,16 @@ const DeleteCategories = (props) => {
   const [show, setShow] = useState(false);
   const [Loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const { message, current_page } = useSelector((state) => state.categories);
+  const { all_categories, current_page, total, per_page } = useSelector(
+    (state) => state.categories
+  );
 
-  const handleYes = () => {
+  const handleYes = async () => {
     setLoading(true);
-    dispatch(deleteCategorie(props.id));
+    await dispatch(deleteCategorie(props.id));
+    await dispatch(All_Categories(current_page));
 
     setTimeout(() => {
-      dispatch(All_Categories(current_page));
       toastSuccess("success delete ");
       setShow(!show);
       setLoading(false);

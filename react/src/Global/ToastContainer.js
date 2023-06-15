@@ -1,8 +1,8 @@
-import { ToastContainer, toast } from "react-toastify";
+import { Slide, ToastContainer, toast } from "react-toastify";
 
 export const toastSuccess = (message) => {
   return toast.success(message ? message : "Successfyli ", {
-    position: "top-right",
+    position: "bottom-right",
     autoClose: 2000,
     hideProgressBar: false,
     closeOnClick: true,
@@ -17,7 +17,7 @@ export const toastError = (message) => {
   return toast.error(
     message ? message : "Error Pless Check Your Inputs .....",
     {
-      position: "top-right",
+      position: "bottom-right",
       autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: true,
@@ -31,7 +31,7 @@ export const toastError = (message) => {
 
 export const toastInfo = (message) => {
   return toast.info(message ? message : "text info ", {
-    position: "top-right",
+    position: "bottom-right",
     autoClose: 5000,
     hideProgressBar: false,
     closeOnClick: true,
@@ -44,7 +44,7 @@ export const toastInfo = (message) => {
 
 export const toastWarning = (message) => {
   return toast.info(message ? message : "text Warrinng", {
-    position: "top-right",
+    position: "bottom-right",
     autoClose: 5000,
     hideProgressBar: false,
     closeOnClick: true,
@@ -58,8 +58,9 @@ export const toastWarning = (message) => {
 export const Container = () => {
   return (
     <ToastContainer
-      autoClose={5000}
-      hideProgressBar={false}
+      position="bottom-right"
+      autoClose={1000}
+      hideProgressBar
       newestOnTop={false}
       closeOnClick
       rtl={false}
@@ -67,6 +68,7 @@ export const Container = () => {
       draggable
       pauseOnHover
       theme="colored"
+      transition={Slide}
     />
   );
 };

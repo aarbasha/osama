@@ -19,7 +19,7 @@ const Users_online = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       dispatch(UserOnlineOffline());
-    }, 1000); // Refresh the list of online users every 10 seconds
+    }, 6000); // Refresh the list of online users every 10 seconds
     return () => clearInterval(interval);
   }, []);
 

@@ -25,7 +25,7 @@ const AddCategories = () => {
   const [coverPreview, setCoverPreview] = useState(null);
   const [ErrorMessage, setErrorMessage] = useState({});
   const [loading, setLoading] = useState(false);
-  
+
   const handelChangeInputs = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -43,7 +43,7 @@ const AddCategories = () => {
     setCoverPreview(null);
   };
 
-  const add_categories = (e) => {
+  const add_categories = async (e) => {
     e.preventDefault();
 
     const data = new FormData();
@@ -53,7 +53,7 @@ const AddCategories = () => {
     data.append("auther", user.username);
     data.append("cover", cover.cover);
 
-    dispatch(add_Categories(data));
+    await dispatch(add_Categories(data));
     setLoading(true);
     setTimeout(() => {
       if (status === 200) {
