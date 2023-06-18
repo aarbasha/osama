@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CategorieController;
+use App\Http\Controllers\API\PostsController;
 use App\Http\Controllers\API\UsersController;
 
 /*
@@ -73,6 +74,28 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::delete('/{id}', 'destroy');
 
             Route::get('test', 'creteFoldersInPublic');
+        });
+    });
+
+    Route::controller(PostsController::class)->group(function () {
+        Route::prefix('posts')->group(function () {
+            //all posts *
+            Route::get('/all', 'Posts');
+            //show post single  *
+            Route::get('/{id}', 'Post');
+            // create post*
+            Route::post('/add', 'store');
+            // Update categories
+            Route::post('/up/{id}', 'update');
+            // destroy  categories
+            Route::delete('/{id}', 'destroy');
+            // get users online
+            //  Route::get('//{id}', 'path');
+
+            // delete image post
+            Route::post('/deleteImage/{id}', 'DeleteImage');
+            // delete cover post
+            Route::post('/deleteCover/{id}', 'deletecover');
         });
     });
 });

@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Post;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Categorie extends Model
 {
@@ -11,7 +12,6 @@ class Categorie extends Model
 
     protected $fillable = ['name', 'info', 'cover', 'auther', 'name_folder'];
 
-  
     public function parent()
     {
         return $this->belongsTo(Categorie::class, 'parent_id');
@@ -22,8 +22,8 @@ class Categorie extends Model
         return $this->hasMany(Categorie::class, 'parent_id');
     }
 
-    public function Prodact()
+    public function Post()
     {
-        return $this->hasMany(Categorie::class, 'prodact_id');
+        return $this->hasMany(Post::class, 'categorie_id');
     }
 }

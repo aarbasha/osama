@@ -4,13 +4,13 @@ import DeleteCategories from "./DeleteCategories";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { editCategories } from "../../../app/toolkit/CategorieSlice";
-
+import { TimeDay } from "../../../Global/Time";
 const TableCategories = (props) => {
   const rediract = useNavigate();
   const dispatch = useDispatch();
 
   const dispatchEdit = async (id) => {
-   await dispatch(editCategories(id))
+    await dispatch(editCategories(id));
     rediract(`/admin/categories/edit_categories/${id}`);
   };
 
@@ -35,7 +35,7 @@ const TableCategories = (props) => {
             <td>{item.auther}</td>
 
             <td>
-              {item.parent_id == null ? (
+              {item.parent_id === null ? (
                 <span className="h3 text-success">
                   <i className="bi bi-house-fill"></i>
                 </span>
@@ -46,7 +46,7 @@ const TableCategories = (props) => {
               )}
             </td>
 
-            <td>{item.created_at}</td>
+            <td>{TimeDay(item.created_at)}</td>
             <td>
               <div className="d-flex justify-content-center align-items-center gap-3 fs-6">
                 {/* show  */}
@@ -56,7 +56,9 @@ const TableCategories = (props) => {
 
                 {/* update */}
                 <button
-                  onClick={() => {dispatchEdit(item.id)}}
+                  onClick={() => {
+                    dispatchEdit(item.id);
+                  }}
                   className="text-warning btn"
                 >
                   <i className="bi bi-pencil-fill" />

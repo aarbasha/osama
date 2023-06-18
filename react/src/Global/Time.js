@@ -1,6 +1,6 @@
 import React from "react";
 
-const Time = (data) => {
+export const Time = (data) => {
   // فانشكن تحويل من الوقت والتاديخ الى الوقت العالمي
 
   const lastSeenAt = data; // ISO 8601 timestamp string
@@ -11,4 +11,22 @@ const Time = (data) => {
   return lastSeenAtTimestamp;
 };
 
-export default Time;
+export const TimeDay = (data) => {
+  const dateTimeString = data;
+  const dateTime = new Date(dateTimeString);
+  const formattedDateTime = dateTime
+    .toLocaleString("en-US", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      hour12: false,
+    })
+    .replace(",", "");
+
+  //console.log(formattedDateTime); // "2023/06/17 00:14:36"
+
+  return formattedDateTime;
+};

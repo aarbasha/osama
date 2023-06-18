@@ -7,7 +7,7 @@ import Skeleton from "react-loading-skeleton";
 import DeleteUsers from "./DeleteUsers";
 import Spinner from "react-bootstrap/Spinner";
 import moment from "moment";
-import Time from "../../../Global/Time";
+import {Time} from "../../../Global/Time";
 
 const Users = () => {
   const navgate = useNavigate();
@@ -17,22 +17,24 @@ const Users = () => {
   const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
+    dispatch(allusers());
     setLoading(true);
     setTimeout(() => {
-      dispatch(allusers());
+    
       setLoading(false);
     }, 1000);
   }, []);
 
   // const [userChek  , setUserChek ] = useState(null)
-  useEffect(() => {
+ // useEffect(() => {
+    /* dispatch(allusers());
     const intervalId = setInterval(() => {
-      dispatch(allusers());
+    
     }, 6000);
     return () => {
       clearInterval(intervalId);
-    };
-  }, []);
+    }; */
+ // }, []);
 
   const dispatchEdit = async (id) => {
     await dispatch(editUser(id));

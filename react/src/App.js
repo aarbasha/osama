@@ -8,6 +8,7 @@ import Cookies from "js-cookie";
 import { profile, setOnline } from "./app/toolkit/AuthSlice";
 import offline from "./images/offline.jpg";
 import axios from "axios";
+import { UserOnlineOffline } from "./app/toolkit/UsersSlice";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -16,17 +17,22 @@ const App = () => {
   const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
+    //if (isAuth) {
     dispatch(profile());
-    if (isAuth) {
+    const intervalId = setInterval(() => {
       dispatch(setOnline());
-    }
+      dispatch(UserOnlineOffline());
+    }, 30000);
+    return () => {
+      clearInterval(intervalId);
+    };
+    // }
   }, []);
 
   const [isOnline, setIsOnline] = useState(window.navigator.onLine);
   useEffect(() => {
     const intervalId = setInterval(() => {
       setIsOnline(window.navigator.onLine);
-      dispatch(setOnline());
     }, 1000);
     return () => {
       clearInterval(intervalId);

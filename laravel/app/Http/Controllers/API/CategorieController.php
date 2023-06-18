@@ -26,7 +26,7 @@ class CategorieController extends Controller
 
     public function categories()
     {
-        $categories = Categorie::all();
+        $categories = Categorie::with('parent')->get();
 
         if ($categories) {
             return $this->SendResponse($categories, 'Sucess , this is all categories', 200);

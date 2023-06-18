@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { UserOnlineOffline } from "../app/toolkit/UsersSlice";
 import Spinner from "react-bootstrap/esm/Spinner";
+import { setOnline } from "../app/toolkit/AuthSlice";
 const ThemisAdmin = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -9,12 +10,12 @@ const ThemisAdmin = () => {
   const { usersOnline, usersOffline } = useSelector((state) => state.users);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      dispatch(UserOnlineOffline());
-    }, 1000);
     SaveMode();
-    return () => clearInterval(interval);
-  }, [dispatch , isAuth]);
+   // if (isAuth) {
+      dispatch(UserOnlineOffline())
+      dispatch(setOnline());
+    //}
+  }, []);
 
   const changeBackgroundSudebar = () => {
     let mySidebar = document.querySelector(".sidebar-wrapper");

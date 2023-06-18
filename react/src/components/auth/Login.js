@@ -4,7 +4,8 @@ import { Container } from "../../Global/ToastContainer";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { toastError, toastSuccess } from "../../Global/ToastContainer";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../app/toolkit/AuthSlice";
+import { login, setOnline } from "../../app/toolkit/AuthSlice";
+import { UserOnlineOffline } from "../../app/toolkit/UsersSlice";
 
 const Login = () => {
   const rediract = useNavigate();
@@ -29,16 +30,21 @@ const Login = () => {
   const LoginSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     setTimeout(() => {
+     
       dispatch(login(inputs));
-      if (isAuth) {
-        console.log(isAuth);
-        rediract(location.pathname);
+      if (status === "succeeded") {
+        if (location.pathname === "login") {
+          toastSuccess(success);
+          rediract("/");
+        } else if (location.pathname !== "login") {
+          toastSuccess(success);
+          rediract(location.pathname);
+        }
+      } else if (status === "failed") {
         toastError(error);
-      } else {
-        console.log(isAuth);
-        rediract("/");
-        toastSuccess(success);
+        rediract(location.pathname);
       }
       setLoading(false);
     }, 3000);

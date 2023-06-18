@@ -1,20 +1,16 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setOnline } from "../app/toolkit/AuthSlice";
+import { UserOnlineOffline } from "../app/toolkit/UsersSlice";
 
 const SetOnline = () => {
   const dispatch = useDispatch();
   const { isOnline, isAuth } = useSelector((state) => state.auth);
- const anas = useEffect(() => {
-    if (isAuth == true) {
-      const intervalId = setInterval(() => {
-        dispatch(setOnline());
-      }, 60000);
-      return clearInterval(intervalId);
-    }
+  useEffect(() => {
+    
   }, []);
 
-  return anas;
+  return null;
 };
 
 export default SetOnline;

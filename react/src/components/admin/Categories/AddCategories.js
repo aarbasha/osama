@@ -76,8 +76,8 @@ const AddCategories = () => {
               <div className="">
                 <form
                   onSubmit={add_categories}
-                  enctype="multipart/form-data"
                   className="row g-3"
+                  encType="multipart/form-data"
                 >
                   <div className="row">
                     <div className="col-12 my-2">

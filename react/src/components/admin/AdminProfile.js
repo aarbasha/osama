@@ -5,9 +5,11 @@ import { UpdateProfile } from "../../app/toolkit/AuthSlice";
 import Spinner from "react-bootstrap/Spinner";
 import { toastError, toastSuccess } from "../../Global/ToastContainer";
 import moment from "moment";
-import Time from "../../Global/Time";
+import {Time} from "../../Global/Time";
 import { useNavigate } from "react-router-dom";
 import SetOnline from "../../Global/SetOnline";
+
+
 const AdminProfile = () => {
   const Rediract = useNavigate();
   const dispatch = useDispatch();
@@ -53,7 +55,6 @@ const AdminProfile = () => {
 
   useEffect(() => {
     setInputs(user);
-    <SetOnline />;
   }, []);
 
   const updateProfile = async (e) => {
