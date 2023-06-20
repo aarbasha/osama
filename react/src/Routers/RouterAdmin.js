@@ -11,6 +11,7 @@ import Edit_Users from "../components/admin/Users/Edit_Users";
 import AdminProfile from "../components/admin/AdminProfile";
 //Categories
 import MasterCategories from "../components/admin/Categories/MasterCategories";
+import AddSubCategories from "../components/admin/Categories/AddSubCategories";
 import AllCategories from "../components/admin/Categories/AllCategories";
 import AddCategories from "../components/admin/Categories/AddCategories";
 import EditCategories from "../components/admin/Categories/EditCategories";
@@ -31,13 +32,28 @@ import Master_Roles from "../components/admin/Roles/Master_Roles";
 import All_Roles from "../components/admin/Roles/All_Roles";
 import Add_Roles from "../components/admin/Roles/Add_Roles";
 import Edit_Roles from "../components/admin/Roles/Edit_Roles";
-import AddSubCategories from "../components/admin/Categories/AddSubCategories";
+
+//posts
 import MasterPosts from "../components/admin/Posts/MasterPosts";
 import AllPosts from "../components/admin/Posts/AllPosts";
 import EditPosts from "../components/admin/Posts/EditPosts";
 import AddPosts from "../components/admin/Posts/AddPosts";
 import ShowPosts from "../components/admin/Posts/ShowPosts";
 import Users_online from "../components/admin/Users/Users_online";
+
+//orders
+import MasterOrder from "../components/admin/Orders/MasterOrder";
+import AllOrder from "../components/admin/Orders/AllOrder";
+import AddOrder from "../components/admin/Orders/AddOrder";
+import EditOrder from "../components/admin/Orders/EditOrder";
+import ShowOrder from "../components/admin/Orders/ShowOrder";
+
+//Tasks
+import MasterTasks from "../components/admin/Tasks/MasterTasks";
+import AllTasks from "../components/admin/Tasks/AllTasks";
+import AddTasks from "../components/admin/Tasks/AddTasks";
+import EditTasks from "../components/admin/Tasks/EditTasks";
+import ShowTasks from "../components/admin/Tasks/ShowTasks";
 
 export const RouterAdmin = () => {
   return [
@@ -86,8 +102,6 @@ export const RouterAdmin = () => {
           path: "edit_users/:id",
           element: <Edit_Users />,
         },
-
-        
       ],
     },
 
@@ -198,6 +212,52 @@ export const RouterAdmin = () => {
         {
           path: "show_posts/:id",
           element: <ShowPosts />,
+        },
+      ],
+    },
+
+    {
+      path: "orders",
+      element: <MasterOrder />,
+      children: [
+        {
+          path: "all_orders",
+          element: <AllOrder />,
+        },
+        {
+          path: "add_orders",
+          element: <AddOrder />,
+        },
+        {
+          path: "edit_orders/:id",
+          element: <EditCategories />,
+        },
+        {
+          path: "show_orders/:id",
+          element: <ShowOrder />,
+        },
+      ],
+    },
+
+    {
+      path: "tasks",
+      element: <MasterTasks />,
+      children: [
+        {
+          path: "all_tasks",
+          element: <AllTasks />,
+        },
+        {
+          path: "add_tasks",
+          element: <AddTasks />,
+        },
+        {
+          path: "edit_tasks/:id",
+          element: <EditTasks />,
+        },
+        {
+          path: "show_tasks/:id",
+          element: <ShowTasks />,
         },
       ],
     },

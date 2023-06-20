@@ -9,6 +9,7 @@ import { profile, setOnline } from "./app/toolkit/AuthSlice";
 import offline from "./images/offline.jpg";
 import axios from "axios";
 import { UserOnlineOffline } from "./app/toolkit/UsersSlice";
+import { all_Orders } from "./app/toolkit/OrdersSlice";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const App = () => {
     const intervalId = setInterval(() => {
       dispatch(setOnline());
       dispatch(UserOnlineOffline());
+      dispatch(all_Orders())
     }, 30000);
     return () => {
       clearInterval(intervalId);

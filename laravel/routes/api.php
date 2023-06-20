@@ -4,7 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CategorieController;
+use App\Http\Controllers\API\OrdersController;
 use App\Http\Controllers\API\PostsController;
+use App\Http\Controllers\API\TasksController;
 use App\Http\Controllers\API\UsersController;
 
 /*
@@ -98,4 +100,32 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/deleteCover/{id}', 'deletecover');
         });
     });
+
+    Route::controller(OrdersController::class)->group(function () {
+        Route::prefix('orders')->group(function () {
+            //all order *
+            Route::get('/all', 'orders');
+            //show order single  *
+            Route::get('/{id}', 'order');
+            // destroy  categories
+            Route::delete('/{id}', 'destroy');
+        });
+    });
+
+    Route::controller(TasksController::class)->group(function () {
+        Route::prefix('tasks')->group(function () {
+            //all tasks *
+            Route::get('/all', 'tasks');
+            //show tasks single  *
+            Route::get('/{id}', 'task');
+            // add task
+           // Route::post('/{id}', 'store');
+            //create tasks from orders
+            Route::post('/{id}', 'create');
+            // destroy  tasks
+            Route::delete('/{id}', 'destroy');
+        });
+    });
 });
+
+Route::post('/add-order', [OrdersController::class, 'store']);

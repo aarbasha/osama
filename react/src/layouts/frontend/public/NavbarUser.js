@@ -3,7 +3,6 @@ import { NavLink, Link, useNavigate } from "react-router-dom";
 import { FiShoppingCart } from "react-icons/fi";
 import { BsSuitHeart } from "react-icons/bs";
 import Logo from "../../../images/brand-logo-2.png";
-import "../../frontend/public/Style/Navbar.css";
 import FullScreenBtn from "../../../Global/FullScreenBtn";
 import { useSelector, useDispatch } from "react-redux";
 import { Logout } from "../../../app/toolkit/AuthSlice";

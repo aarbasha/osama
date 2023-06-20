@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { MdSecurity } from "react-icons/md";
 import { HiUserGroup, HiUsers } from "react-icons/hi";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 const SidebarContent = () => {
+  const { orders } = useSelector((state) => state.orders);
+
   return (
     <>
       <div className="tab-content">
@@ -55,28 +59,36 @@ const SidebarContent = () => {
               Categories
             </NavLink>
 
-            <NavLink
+           {/*  <NavLink
               to="/admin/products/all_products"
               className="list-group-item"
             >
               <i className="bi bi-chat-left-text" />
               Products
-            </NavLink>
+            </NavLink> */}
 
             <NavLink to="/admin/posts/all_posts" className="list-group-item">
-            <i className="bi bi-receipt" />
+              <i className="bi bi-receipt" />
               Posts
             </NavLink>
 
-            <a href="app-to-do.html" className="list-group-item">
+            <NavLink to="/admin/orders/all_orders" className="list-group-item">
               <i className="bi bi-check2-square" />
-              Todo List
-            </a>
+              Ordars
+              {orders?.length === 0 ? null : (
+                <span
+                  className="bg-danger  text-center p-1 px-2"
+                  style={{ position: "absolute", right: "10px", top: "5px" }}
+                >
+                  {orders?.length > 0 ? orders.length : null}
+                </span>
+              )}
+            </NavLink>
 
-            <a href="app-invoice.html" className="list-group-item">
+            <NavLink to="/admin/tasks/all_tasks" className="list-group-item">
               <i className="bi bi-receipt" />
-              Invoice
-            </a>
+              Tasks
+            </NavLink>
           </div>
         </div>
 
