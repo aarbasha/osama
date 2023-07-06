@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cookie;
+use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -64,7 +65,7 @@ class AuthController extends Controller
                 $user->last_seen_at = now();
                 $user->is_online = 1;
                 $user->save();
-                $token = $user->createToken('authToken')->plainTextToken;
+                $token = $user->createToken('jwt')->plainTextToken;
                 $cookie = cookie('jwt', $token, 60 * 24);
                 return response()->json([
                     'user' => $user,
@@ -174,10 +175,40 @@ class AuthController extends Controller
         return response()->json(['online' => $usersOnlin, 'offline' => $usersOffline]);
     }
 
+    public function logoutAnyUser($id)
+    {
+        $user = Auth::logoutOtherDevices($id);
+
+        if ($user) {
+            return $this->SendResponse($user, 'success logout user in sidout system   ', 200);
+        }
+        return $this->SendResponse(null, 'error logout user in sidout system   ', 400);
+    }
+
     public function test()
     {
         $count = user::count();
         return $count;
+    }
 
+    public function RefreshToken(Request $request)
+    {
+        $cookieName = 'jwt';
+        $currentToken = $request->cookie($cookieName);
+
+        if (!$currentToken) {
+            return response()->json(['message' => 'Token cookie not found'], 401);
+        }
+
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['message' => 'User not authenticated'], 401);
+        }
+        $newToken = $user->createToken('jwt')->plainTextToken;
+        $expiresAt = now()->addMinutes(config('sanctum.expiration'));
+
+        return response()->json(['token' => $newToken, 'expires_at' => $expiresAt])
+            ->withCookie(cookie($cookieName, $newToken, config('sanctum.expiration')));
     }
 }

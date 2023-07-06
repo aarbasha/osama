@@ -1,7 +1,7 @@
 import React from "react";
 import FadeOutAnimation from "../../../Animation/FadeOutAnimation";
-import { NavLink, useNavigate, Outlet, useLocation } from "react-router-dom";
-const MasterPosts = () => {
+import { NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
+const MasterBehance = () => {
   const Rediract = useNavigate();
   const location = useLocation();
   const slice = location.pathname;
@@ -33,16 +33,19 @@ const MasterPosts = () => {
 
           <div className="ms-auto">
             <NavLink
-              to={"/admin/posts/all_posts"}
+              to={"/admin/postBehance/all_post_behance"}
               type="button"
               className="btn btn-dark mx-2"
             >
-              All Posts
+              All Posts in Behance
             </NavLink>
 
             <button className={"btn btn-primary mx-2"}>
-              <NavLink to={"/admin/posts/add_post_behance"} className="text-white">
-                Add Posts
+              <NavLink
+                to={"/admin/postBehance/add_post_behance"}
+                className="text-white"
+              >
+                Add Post in Behance
               </NavLink>
             </button>
 
@@ -63,4 +66,4 @@ const MasterPosts = () => {
   );
 };
 
-export default MasterPosts;
+export default MasterBehance;

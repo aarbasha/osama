@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import FadeOutAnimation from "../../../Animation/FadeOutAnimation";
-import { all_tasks } from "../../../app/toolkit/TasksSlice";
+import { all_tasks, edit_task } from "../../../app/toolkit/TasksSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { TimeDay } from "../../../Global/Time";
@@ -26,13 +26,14 @@ const AllTasks = () => {
     }, 2000);
   }, [dispatch]);
 
-  const dispatchEditTask = (id) => {
+  const dispatchEditTask = async (id) => {
+    await dispatch(edit_task(id));
     navgate(`/admin/tasks/edit_tasks/${id}`);
   };
 
-  const dispatchShowTask = (id) => {
+ /*  const dispatchShowTask = (id) => {
     navgate(`/admin/tasks/show_tasks/${id}`);
-  };
+  }; */
 
   return (
     <FadeOutAnimation>
@@ -123,11 +124,15 @@ const AllTasks = () => {
                           </td>
                           <td>{TimeDay(task.delivery_time)}</td>
                           <td>{TimeDay(task.created_at)}</td>
-                          <td><span className="bg-info p-2">{task.auther}</span></td>
+                          <td>
+                            <span className="bg-primary text-white p-2">
+                              {task.auther}
+                            </span>
+                          </td>
 
                           <td>
                             <div className="d-flex align-items-center gap-3 fs-6">
-                              <button
+                              {/* <button
                                 className="text-primary btn"
                                 data-bs-toggle="tooltip"
                                 data-bs-placement="bottom"
@@ -136,9 +141,9 @@ const AllTasks = () => {
                                 onClick={() => dispatchShowTask(task.id)}
                               >
                                 <i className="bi bi-eye-fill" />
-                              </button>
+                              </button> */}
                               <button
-                                className="text-warning btn"
+                                className="btn-outline-info btn"
                                 data-bs-toggle="tooltip"
                                 data-bs-placement="bottom"
                                 data-bs-original-title="Edit info"

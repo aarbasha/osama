@@ -58,9 +58,9 @@ class TasksController extends Controller
         return $this->SendResponse(null, 'Error craete tasks', 400);
     }
 
-    /*  public function store(Request $request)
+    public function store(Request $request)
     {
-       $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'fullname' => 'required|string|max:255',
             'body' => 'required|string|max:9999999',
             'mobile' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:9|max:13',
@@ -74,13 +74,43 @@ class TasksController extends Controller
         $tasks->body = $request->body;
         $tasks->mobile = $request->mobile;
         $tasks->email = $request->email;
-        $tasks->auther = Auth::user();
+        $tasks->auther = $request->auther;
+        $tasks->delivery_time = $request->delivery_time;
+        $tasks->status = $request->status;
         $tasks->save();
         if ($tasks) {
             return $this->SendResponse($tasks, 'success craete tasks', 200);
         }
         return $this->SendResponse(null, 'Error craete tasks', 400);
-    } */
+    }
+
+
+
+    public function update(Request  $request, $id)
+    {
+         $validator = Validator::make($request->all(), [
+            'fullname' => 'required|string|max:255',
+            'body' => 'required|string|max:9999999',
+            'mobile' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:9|max:13',
+            'email' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return $this->SendResponse(null, $validator->errors(), 401);
+        } 
+        $tasks = Task::find($id);
+        $tasks->fullname = $request->fullname;
+        $tasks->body = $request->body;
+        $tasks->mobile = $request->mobile;
+        $tasks->email = $request->email;
+        $tasks->auther = $request->auther;
+        $tasks->delivery_time = $request->delivery_time;
+        $tasks->status = $request->status;
+        $tasks->save();
+        if ($tasks) {
+            return $this->SendResponse($tasks, 'success update tasks', 200);
+        }
+        return $this->SendResponse(null, 'Error update tasks', 400);
+    }
 
 
     public function destroy($id)

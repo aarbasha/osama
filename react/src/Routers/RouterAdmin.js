@@ -54,16 +54,20 @@ import AllTasks from "../components/admin/Tasks/AllTasks";
 import AddTasks from "../components/admin/Tasks/AddTasks";
 import EditTasks from "../components/admin/Tasks/EditTasks";
 import ShowTasks from "../components/admin/Tasks/ShowTasks";
+import MasterBehance from "../components/admin/Behance/MasterBehance";
+import AllBehance from "../components/admin/Behance/AllBehance";
+import EditBehance from "../components/admin/Behance/EditBehance";
+import AddBehance from "../components/admin/Behance/AddBehance";
 
 export const RouterAdmin = () => {
   return [
     {
       path: "index",
-      element: <Dashborde />,
+      element: <Index2 />,
     },
     {
       path: "app",
-      element: <Index2 />,
+      element: <Dashborde />,
     },
     {
       path: "app2",
@@ -258,6 +262,25 @@ export const RouterAdmin = () => {
         {
           path: "show_tasks/:id",
           element: <ShowTasks />,
+        },
+      ],
+    },
+
+    {
+      path: "postBehance",
+      element: <MasterBehance />,
+      children: [
+        {
+          path: "all_post_behance",
+          element: <AllBehance />,
+        },
+        {
+          path: "add_post_behance",
+          element: <AddBehance />,
+        },
+        {
+          path: "edit_post_behance/:id",
+          element: <EditBehance />,
         },
       ],
     },

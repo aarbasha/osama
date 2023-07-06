@@ -59,7 +59,7 @@ const SidebarContent = () => {
               Categories
             </NavLink>
 
-           {/*  <NavLink
+            {/*  <NavLink
               to="/admin/products/all_products"
               className="list-group-item"
             >
@@ -70,6 +70,14 @@ const SidebarContent = () => {
             <NavLink to="/admin/posts/all_posts" className="list-group-item">
               <i className="bi bi-receipt" />
               Posts
+            </NavLink>
+
+            <NavLink
+              to="/admin/postBehance/all_post_behance"
+              className="list-group-item"
+            >
+              <i className="bi bi-receipt" />
+              post in Behance
             </NavLink>
 
             <NavLink to="/admin/orders/all_orders" className="list-group-item">
@@ -86,7 +94,7 @@ const SidebarContent = () => {
             </NavLink>
 
             <NavLink to="/admin/tasks/all_tasks" className="list-group-item">
-              <i className="bi bi-receipt" />
+              <i className="bi bi-list-task" />
               Tasks
             </NavLink>
           </div>

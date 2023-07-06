@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { FiShoppingCart } from "react-icons/fi";
 import { BsSuitHeart } from "react-icons/bs";
-import Logo from "../../../images/brand-logo-2.png";
+import Logo from "./Style/images/osama-logo.png";
 import FullScreenBtn from "../../../Global/FullScreenBtn";
 import { useSelector, useDispatch } from "react-redux";
 import { Logout } from "../../../app/toolkit/AuthSlice";
@@ -24,8 +24,9 @@ const NavbarUser = () => {
     <header>
       <nav className="navbar navbar-user navbar-expand-lg fixed-top rounded-0 border-bottom">
         <div className="container">
-          <Link className="navbar-brand" to="/">
-            <img src={Logo} width={140} />
+          <Link className="navbar-brand" 
+          style={{width:'200px' , height:'auto' , position:'relative'}} to="/">
+            <img src={Logo} style={{width:'200px' , height:'auto' , position:'absolute' , top:'-100px'}} />
           </Link>
           <button
             id="toogle"
@@ -122,7 +123,7 @@ const NavbarUser = () => {
                           <div className="user-setting d-flex align-items-center gap-1">
                             <img
                               src={
-                                user.avatar === 'null'
+                                user.avatar === "null"
                                   ? `https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y`
                                   : `http://localhost:8000/photo/${user.avatar}`
                               }
@@ -146,7 +147,7 @@ const NavbarUser = () => {
                               <div className="d-flex p-2 justify-content-center">
                                 <img
                                   src={
-                                    user.avatar === 'null'
+                                    user.avatar === "null"
                                       ? `https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y`
                                       : `http://localhost:8000/photo/${user.avatar}`
                                   }
@@ -173,23 +174,25 @@ const NavbarUser = () => {
                             <hr className="dropdown-divider" />
                           </li>
 
-                          <li>
-                            <Link
-                              to="/admin/index"
-                              className="dropdown-item btn-info"
-                            >
-                              <button className="dropdown-item">
-                                <div className="d-flex align-items-center">
-                                  <div className="setting-icon">
-                                    <i className="bi bi-person-fill" />
+                          {user.roles === 1 || user.roles === 0  ? (
+                            <li>
+                              <Link
+                                to="/admin/index"
+                                className="dropdown-item btn-info"
+                              >
+                                <button className="dropdown-item">
+                                  <div className="d-flex align-items-center">
+                                    <div className="setting-icon">
+                                      <i className="bi bi-person-fill" />
+                                    </div>
+                                    <div className="setting-text ms-3">
+                                      <span> Admin Dashboard</span>
+                                    </div>
                                   </div>
-                                  <div className="setting-text ms-3">
-                                    <span> Admin Dashboard</span>
-                                  </div>
-                                </div>
-                              </button>
-                            </Link>
-                          </li>
+                                </button>
+                              </Link>
+                            </li>
+                          ) : null}
 
                           <li>
                             <button className="dropdown-item">

@@ -457,7 +457,7 @@ a {
 .sidebar-wrapper .iconmenu .nav-pills .nav-link.active,
 .iconmenu .nav-pills .show > .nav-link {
   color: #fff;
-  background-color: #0d6efd;
+  background-color: #00a0de;
 }
 
 .sidebar-wrapper .textmenu .list-group .list-group-item {
@@ -474,7 +474,7 @@ a {
 }
 
 .sidebar-wrapper .textmenu .list-group-item + .list-group-item.active {
-  color: #3461ff;
+  color: #00a0de;
   background-color: hsl(216deg 98% 52% / 12%);
   border-color: rgb(52 97 255 / 12%);
 }
@@ -1039,7 +1039,7 @@ a {
 }
 
 .email-navigation a.list-group-item {
-  color: #404142;
+  color: #00a0de;
   padding: 0.35rem 1.25rem;
   background-color: #fff;
   border-bottom: 1px solid rgb(0 0 0 / 0%);
@@ -1051,7 +1051,7 @@ a {
 }
 
 .email-navigation a.list-group-item.active {
-  color: #0b5ed7;
+  color: #00a0de;
   font-weight: 600;
   background-color: rgb(13 110 253 / 0.12);
 }
@@ -1286,7 +1286,7 @@ a {
 
 .chat-tab-menu .nav-pills .nav-link.active,
 .chat-tab-menu .nav-pills .show > .nav-link {
-  color: #008cff;
+  color: #00a0de;
   background-color: rgb(0 123 255 / 0%);
 }
 
@@ -1321,7 +1321,7 @@ a {
 }
 
 .chat-list .list-group-item.active {
-  background-color: rgb(13 110 253 / 0.12);
+  background-color: #00a0de;
 }
 
 .chart-online {

@@ -41,23 +41,23 @@
 .navbar-user {
   position: fixed;
   top: 0px;
-  background: rgb(2, 0, 36);
-  background: linear-gradient(
+  background: #1B2232;
+ /*  background: linear-gradient(
     90deg,
     rgb(6, 56, 96) 0%,
     rgb(8, 56, 73) 49%,
     rgb(16, 7, 195) 100%
-  );
+  ); */
 }
 
 .navbar-user .dropdown-menu {
-  background: rgb(2, 0, 36);
-  background: linear-gradient(
+  background: #1B2232;
+/*   background: linear-gradient(
     90deg,
     rgba(2, 0, 36, 1) 0%,
     rgba(22, 68, 85, 1) 49%,
     rgba(2, 0, 36, 1) 100%
-  );
+  ); */
   transition: all 0.5s;
   width: 300px;
 }
@@ -93,4 +93,9 @@
 .bi-search:hover{
   transition: 1.2s all;
   transform: rotate(360deg);
+}
+
+/* start desing in layouts */
+.id{
+  position: relative;
 }

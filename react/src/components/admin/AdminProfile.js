@@ -3,12 +3,15 @@ import GlobalAnimation from "../../Animation/GlobalAnimation";
 import { useSelector, useDispatch } from "react-redux";
 import { UpdateProfile } from "../../app/toolkit/AuthSlice";
 import Spinner from "react-bootstrap/Spinner";
-import { toastError, toastSuccess } from "../../Global/ToastContainer";
+import {
+  toastError,
+  toastSuccess,
+  Container,
+} from "../../Global/ToastContainer";
 import moment from "moment";
-import {Time} from "../../Global/Time";
+import { Time } from "../../Global/Time";
 import { useNavigate } from "react-router-dom";
 import SetOnline from "../../Global/SetOnline";
-
 
 const AdminProfile = () => {
   const Rediract = useNavigate();
@@ -71,14 +74,15 @@ const AdminProfile = () => {
     if (Checked === false) {
       data.append("password", inputs.password);
     }
-
-   await dispatch(UpdateProfile(data));
+    await dispatch(UpdateProfile(data));
     setLoading(true);
     setTimeout(() => {
       if (status === "succeeded") {
         toastSuccess("success update my profile");
+        console.log(status + 1);
       } else {
         toastError("Error . not Updata profile");
+        console.log(status +2 );
       }
       setLoading(false);
     }, 2000);
@@ -86,6 +90,7 @@ const AdminProfile = () => {
 
   return (
     <GlobalAnimation>
+      {Container()}
       <div className="row">
         <div className="col-12 col-lg-8">
           <div className="card">

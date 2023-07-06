@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 
 const API_URL = "http://localhost:8000/api";
 
@@ -89,9 +90,45 @@ export const setOnline = createAsyncThunk(
   }
 );
 
+export const refreshToken = createAsyncThunk(
+  "auth/refreshToken",
+  async (_, { getState }) => {
+    const { token } = getState().auth;
+
+    if (!token) {
+      throw new Error("Token not found");
+    }
+
+    const decodedToken = jwtDecode(token);
+    const expirationTime = decodedToken.exp * 1000; // Convert from seconds to milliseconds
+    const timeUntilExpiration = expirationTime - Date.now();
+
+    if (timeUntilExpiration > 5 * 60 * 1000) {
+      // More than 5 minutes left until expiration
+      return;
+    }
+
+    try {
+      const response = await axios.post(`${API_URL}/refresh-token`, {
+        withCredentials: true,
+      });
+      const newToken = response.data.token;
+      const newExpirationTime = new Date(response.data.expires_at).getTime();
+
+      // Update the token in the Redux store and the token cookie
+      // You can use your own action types and payload structure here
+      return { token: newToken, expirationTime: newExpirationTime };
+    } catch (error) {
+      console.error(error);
+      throw new Error("Failed to refresh token");
+    }
+  }
+);
+
 const initialState = {
   user: null,
   token: null,
+  expirationTime: null,
   status: "xxxx",
   success: null,
   loading: false,
@@ -220,6 +257,22 @@ export const AuthSlice = createSlice({
     [setOnline.rejected]: (state, actions) => {
       state.loading = false;
       state.status = "failed";
+    },
+
+    // refreshToken
+
+    [refreshToken.pending]: (state, actions) => {
+      state.loading = true;
+      state.status = "loading";
+    },
+    [refreshToken.fulfilled]: (state, actions) => {
+      state.token = actions.payload.token;
+      state.expirationTime = actions.payload.expirationTime;
+    },
+    [refreshToken.rejected]: (state, actions) => {
+      state.token = null;
+      state.expirationTime = null;
+      state.user = null;
     },
   },
 });

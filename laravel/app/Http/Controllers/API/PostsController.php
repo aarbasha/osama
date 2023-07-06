@@ -27,6 +27,16 @@ class PostsController extends Controller
         return $this->SendResponse(null, 'Error', 400);
     }
 
+    public function all_Posts()
+    {
+        $posts = Post::all();
+
+        if ($posts) {
+            return $this->SendResponse($posts, 'success this all posts', 200);
+        }
+        return $this->SendResponse(null, 'Error', 400);
+    }
+
     public function Post($id)
     {
 
@@ -45,10 +55,12 @@ class PostsController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255|unique:posts',
             'body' => 'required|string|max:9999999',
-            'images' => 'required|min:2|max:102400',
-            'cover' => 'required',
+            'images' => 'required|max:50000',
+            'cover' => 'required|mimes:jpeg,jpg,png,gif|max:50000',
             'tags' => 'required',
             'categorie_id' => 'required',
+            /*    'document' => 'required|file|mimes:pdf,doc,docx,xls,xlsx|max:10000',
+            'video' => 'required|file|mimes:mp4,mov,avi|max:20000',  */
         ]);
         if ($validator->fails()) {
             return $this->SendResponse(null, $validator->errors(), 401);
@@ -96,8 +108,8 @@ class PostsController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255|unique:posts',
             'body' => 'required|string|max:9999999',
-            'images' => 'required|min:2|max:102400',
-            'cover' => 'required',
+            'images' => 'required|file|mimes:jpeg,jpg,png,gif,doc,docx,xls,xlsx|max:50000',
+            'cover' => 'required|mimes:jpeg,jpg,png,gif,doc,docx,xls,xlsx|max:50000',
             'tags' => 'required',
             'categorie_id' => 'required',
         ]);

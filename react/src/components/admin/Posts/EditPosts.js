@@ -12,7 +12,12 @@ import {
   edit_Posts,
 } from "../../../app/toolkit/PostSlice";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { toastSuccess, toastError } from "../../../Global/ToastContainer";
+import {
+  toastSuccess,
+  toastError,
+  toastInfo,
+  Container,
+} from "../../../Global/ToastContainer";
 import Spinner from "react-bootstrap/esm/Spinner";
 import Skeleton from "react-loading-skeleton";
 
@@ -24,7 +29,7 @@ const EditPosts = () => {
 
   useEffect(() => {
     setLoading(true);
-    getOldData()
+    // getOldData();
     setTimeout(() => {
       setInputs(oldPost ? oldPost : {});
       setCover(oldPost?.cover);
@@ -33,10 +38,10 @@ const EditPosts = () => {
     }, 500);
   }, [dispatch]);
 
-  const getOldData =async ()=>{
+  /* const getOldData =async ()=>{
    await dispatch(Categories());
    await dispatch(edit_Posts(id));
-  }
+  } */
 
   const { user } = useSelector((state) => state.auth);
   const { all_categories } = useSelector((state) => state.categories);
@@ -160,9 +165,14 @@ const EditPosts = () => {
     e.preventDefault();
     console.log(id + name_folder);
     setLoading(true);
-   await dispatch(delete_Image_Post_Edit({ id: id, name_folder: name_folder }));
-   await getOldData()
+    await dispatch(
+      delete_Image_Post_Edit({ id: id, name_folder: name_folder })
+    );
+
     setTimeout(() => {
+      dispatch(Categories());
+      dispatch(edit_Posts(id));
+      toastInfo("success delete images ....");
       setLoading(false);
     }, 2000);
 
@@ -171,6 +181,7 @@ const EditPosts = () => {
 
   return (
     <ScaleInAnimation>
+      {Container()}
       <div className="card">
         <div className="card-body">
           <form encType="multipart/form-data" onSubmit={submitForm}>

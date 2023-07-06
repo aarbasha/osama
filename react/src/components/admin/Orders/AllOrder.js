@@ -10,9 +10,10 @@ import {
 import { TimeDay } from "../../../Global/Time";
 import Skeleton from "react-loading-skeleton";
 import DeleteOrder from "./DeleteOrder";
-import { toastSuccess } from "../../../Global/ToastContainer";
+import { Container } from "../../../Global/ToastContainer";
 import Spinner from "react-bootstrap/esm/Spinner";
 import AccpoetOrder from "./AccpoetOrder";
+import ShowOrder from "./ShowOrder";
 
 const AllOrder = () => {
   const location = useLocation();
@@ -26,26 +27,13 @@ const AllOrder = () => {
     setLoading(true);
     setTimeout(() => {
       dispatch(all_Orders());
-
       setLoading(false);
     }, 2000);
   }, [dispatch]);
 
-  const createTask = async (id) => {
-    setLoadingBtn(true);
-    await dispatch(create_tasks(id));
-
-    await dispatch(delete_Orders(id));
-    toastSuccess("success create task go to page tasks ...");
-    setTimeout(() => {
-      dispatch(all_Orders());
-
-      setLoadingBtn(false);
-    }, 2000);
-  };
-
   return (
     <FadeOutAnimation>
+      {Container()}
       <div className="card">
         <div className="card-header py-3">
           <div className="row g-3">
@@ -123,23 +111,8 @@ const AllOrder = () => {
                               <td>{TimeDay(order.created_at)}</td>
 
                               <td>
-                                <div className=" gap-3 fs-6">
-                                  {/* <button
-                                onClick={() => createTask(order.id)}
-                                className="btn btn-success mx-2"
-                              >
-                                {loadingBtn ? (
-                                  <Spinner
-                                    animation="border"
-                                    variant="dark"
-                                    size="sm"
-                                  />
-                                ) : (
-                                  <span>Accpoet</span>
-                                )}
-                              </button> */}
-
-                                  <AccpoetOrder
+                                <div className=" gap-3 fs-6 ">
+                                  {/* <AccpoetOrder
                                     id={order.id}
                                     fullname={order.fullname}
                                     email={order.email}
@@ -153,11 +126,16 @@ const AllOrder = () => {
                                     email={order.email}
                                     mobile={order.mobile}
                                     data={order.created_at}
-                                  />
+                                  /> */}
 
-                                  <button className="btn btn-info mx-2">
-                                    show
-                                  </button>
+                                  <ShowOrder
+                                    id={order.id}
+                                    fullname={order.fullname}
+                                    email={order.email}
+                                    mobile={order.mobile}
+                                    data={order.created_at}
+                                    body={order.body}
+                                  />
                                 </div>
                               </td>
                             </tr>

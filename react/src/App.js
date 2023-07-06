@@ -5,30 +5,39 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthRefreshToken, AuthLogout } from "./app/toolkit/AuthSlice";
 import Cookies from "js-cookie";
-import { profile, setOnline } from "./app/toolkit/AuthSlice";
+import { profile, setOnline, refreshToken } from "./app/toolkit/AuthSlice";
 import offline from "./images/offline.jpg";
 import axios from "axios";
 import { UserOnlineOffline } from "./app/toolkit/UsersSlice";
 import { all_Orders } from "./app/toolkit/OrdersSlice";
+import { Spinner } from "react-bootstrap";
 
 const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const { isAuth } = useSelector((state) => state.auth);
-  const { user } = useSelector((state) => state.auth);
+  const navgate = useNavigate();
+  const { isAuth, token, expirationTime, user } = useSelector(
+    (state) => state.auth
+  );
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    //if (isAuth) {
-    dispatch(profile());
-    const intervalId = setInterval(() => {
-      dispatch(setOnline());
-      dispatch(UserOnlineOffline());
-      dispatch(all_Orders())
-    }, 30000);
-    return () => {
-      clearInterval(intervalId);
-    };
-    // }
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+      //if (isAuth) {
+      dispatch(profile());
+      const intervalId = setInterval(() => {
+        dispatch(setOnline());
+        dispatch(UserOnlineOffline());
+        dispatch(all_Orders());
+      }, 30000);
+      return () => {
+        clearInterval(intervalId);
+      };
+      // }
+    }, 3000);
   }, []);
 
   const [isOnline, setIsOnline] = useState(window.navigator.onLine);
@@ -43,51 +52,55 @@ const App = () => {
 
   /*   useEffect(() => {
     const intervalId = setInterval(() => {
-      try {
-        const response = axios.post('http://localhost:8000/api/setOnline')
-        console.log(response);
-      } catch (error) {
-        console.log(error)
+      if (!document.cookie.includes("jwt=")) {
+        clearInterval(intervalId);
+        navgate("/login");
       }
-    }, 5000);
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []); */
+    }, 1000);
 
-  /*  const dispatch = useDispatch();
-  const rediract = useNavigate();
-  const [isAuth, setIsAuth] = useState(false);
-  // Function to check if the token is expired or about toexpire
-  const checkTokenExpiration = () => {
-    const tokenExpiration = localStorage.getItem("tokenExpiration");
-    const currentTime = Date.now();
-    const timeUntilExpiration = tokenExpiration - currentTime;
-    const timeUntilRefresh = 5 * 60 * 1000; // 5 minutes before expiration
-    if (timeUntilExpiration <= timeUntilRefresh) {
-      refreshAccessToken();
-      console.log("tha update token ..................");
+    return () => clearInterval(intervalId);
+  }, [navgate]); */
+
+  useEffect(() => {
+    if (!token || !expirationTime) {
+      return;
     }
-  }; */
-  // Function to refresh the access token
-  /*  const refreshAccessToken = () => {
-    const token = localStorage.getItem("token");
-    dispatch(AuthRefreshToken(token));
-  }; */
-
-  // Check token expiration on component mount and every minute
-  /*   useEffect(() => {
-    checkTokenExpiration();
-    const interval = setInterval(() => {
-      checkTokenExpiration();
-    }, 60000); // Check token expiration every minute
-    return () => clearInterval(interval);
-  }, []); */
+    const timeUntilExpiration = expirationTime - Date.now();
+    if (timeUntilExpiration <= 0) {
+      dispatch(refreshToken());
+    } else {
+      const refreshTimeout = setTimeout(() => {
+        dispatch(refreshToken());
+      }, timeUntilExpiration - 5 * 60 * 1000); // Refresh 5 minutes before expiration
+      return () => clearTimeout(refreshTimeout);
+    }
+  }, [dispatch, token, expirationTime]);
 
   return (
     <div className="App">
       {isOnline ? (
-        <RouterIndex />
+        loading ? (
+          <div
+            className="spical-spinner"
+            style={{
+              width: "100%",
+              height: "100vh",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Spinner
+              animation="grow"
+              size="lg"
+              variant="primary"
+              className="spinner-border"
+              style={{ margin: "0px auto", width: "100px", height: "100px" }}
+            />
+          </div>
+        ) : (
+          <RouterIndex />
+        )
       ) : (
         <img src={offline} style={{ width: "100%", height: "100vh" }} />
       )}

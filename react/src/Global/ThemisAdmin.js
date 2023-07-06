@@ -6,7 +6,7 @@ import { setOnline } from "../app/toolkit/AuthSlice";
 const ThemisAdmin = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const { isAuth } = useSelector((state) => state.auth);
+  const { isAuth , user } = useSelector((state) => state.auth);
   const { usersOnline, usersOffline } = useSelector((state) => state.users);
 
   useEffect(() => {
@@ -189,7 +189,7 @@ const ThemisAdmin = () => {
 
               <hr />
               <div className="row d-flex justify-content-center text-center mt-3">
-                {isAuth ? 
+                {isAuth && user.roles <= 1 ? 
                
                 <div className="d-flex flex-column">
                 <h3>Users Active </h3>

@@ -38,7 +38,6 @@ const Edit_Users = () => {
       setTimeout(() => {
         setInputs(oldUser);
       }, 1000);
-   
     }
     dispatchFunction();
     setLoadingInput(true);
@@ -47,13 +46,19 @@ const Edit_Users = () => {
     }, 2000);
   }, []);
 
-  const [Checked, setChecked] = useState(true);
+  const [Checked, setChecked] = useState(false);
   const handelChangechecked = (e) => {
-    if (e.target.checked === true) {
+    setChecked(!Checked);
+
+    console.log(Checked);
+
+    /* if (e.target.checked === true) {
       setChecked(false);
+      console.log(Checked);
     } else {
       setChecked(true);
-    }
+      console.log(Checked);
+    } */
   };
 
   const handelChangeInputs = async (e) => {
@@ -80,7 +85,10 @@ const Edit_Users = () => {
     data.append("email", inputs.email);
     data.append("username", inputs.username);
     data.append("phone", inputs.phone);
-    data.append("password", inputs.password);
+    if (Checked) {
+      data.append("password", inputs.password);
+    }
+
     data.append("roles", inputs.roles);
     data.append("status", inputs.status);
     data.append("avatar", avatar.avatar);
@@ -193,9 +201,9 @@ const Edit_Users = () => {
                       placeholder="Enter Password"
                       name="password"
                       id="password"
-                      value={Checked ? inputs?.password : null}
-                      disabled={Checked}
-                      onChange={handelChangechecked}
+                      value={inputs?.password}
+                      disabled={!Checked}
+                      onChange={handelChangeInputs}
                     />
                   )}
 

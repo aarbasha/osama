@@ -30,10 +30,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('profile', [AuthController::class, 'profile']);
         Route::post('upProfile', [AuthController::class, 'updateProfile']);
 
+        Route::post('refresh-token', [AuthController::class, 'RefreshToken']);
+
+
         Route::post('setOnline', [AuthController::class, 'setOnline']);
         Route::get('users/online', [AuthController::class, 'online']);
 
         Route::get('test', [AuthController::class, 'test']);
+
+        Route::post('/logoutUser/{id}', 'logoutAnyUser');
     });
 
 
@@ -81,8 +86,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::controller(PostsController::class)->group(function () {
         Route::prefix('posts')->group(function () {
-            //all posts *
+            //all posts and pagination *
             Route::get('/all', 'Posts');
+
+            Route::get('/posts', 'all_Posts');
             //show post single  *
             Route::get('/{id}', 'Post');
             // create post*
@@ -119,9 +126,11 @@ Route::middleware('auth:sanctum')->group(function () {
             //show tasks single  *
             Route::get('/{id}', 'task');
             // add task
-           // Route::post('/{id}', 'store');
+            Route::post('/add', 'store');
             //create tasks from orders
             Route::post('/{id}', 'create');
+            // update task
+            Route::post('/up/{id}', 'update');
             // destroy  tasks
             Route::delete('/{id}', 'destroy');
         });

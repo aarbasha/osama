@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import GlobalAnimation from "../../../Animation/GlobalAnimation";
+import FadeOutAnimation from "../../../Animation/FadeOutAnimation";
 import axios from "axios";
 import Spinner from "react-bootstrap/esm/Spinner";
 import { toastSuccess, Container } from "../../../Global/ToastContainer";
@@ -48,7 +48,7 @@ const About = () => {
   };
 
   return (
-    <GlobalAnimation>
+    <FadeOutAnimation>
       {Container()}
       <div className="">
         <div className="card-body">
@@ -131,7 +131,7 @@ const About = () => {
           </form>
         </div>
       </div>
-    </GlobalAnimation>
+    </FadeOutAnimation>
   );
 };
 

@@ -12,7 +12,21 @@ export const all_Posts = createAsyncThunk(
           withCredentials: true,
         }
       );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
 
+export const Posts = createAsyncThunk(
+  "post/Posts",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${API_URL}/posts/posts`, {
+        withCredentials: true,
+      });
+      console.log(response.data);
       return response.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -93,6 +107,7 @@ export const delete_Image_Post_Edit = createAsyncThunk(
         { withCredentials: true }
       );
       console.log(responce);
+      return responce.data;
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -109,6 +124,7 @@ export const delete_Cover_Post_Edit = createAsyncThunk(
         { withCredentials: true }
       );
       console.log(responce.data);
+      return responce.data;
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -152,6 +168,25 @@ const PostSlice = createSlice({
       state.per_page = actions.payload.data.per_page;
     },
     [all_Posts.rejected]: (state, actions) => {
+      console.log(actions);
+    },
+
+    // posts dont pagination
+    [Posts.pending]: (state, actions) => {
+      console.log(actions);
+
+      /*   state.loading = true; */
+    },
+    [Posts.fulfilled]: (state, actions) => {
+      console.log(actions.payload);
+      state.posts = actions.payload.data;
+      state.loading = false;
+      state.error = null;
+      state.current_page = actions.payload.data.current_page;
+      state.total = actions.payload.data.total;
+      state.per_page = actions.payload.data.per_page;
+    },
+    [Posts.rejected]: (state, actions) => {
       console.log(actions);
     },
 
@@ -204,6 +239,25 @@ const PostSlice = createSlice({
       state.error = null; */
     },
     [delete_Posts.rejected]: (state, actions) => {
+      console.log(actions);
+      /*   state.status = actions.payload.status;
+      state.loading = false;
+      state.error = actions.payload.message; */
+    },
+
+    //delete_Image_Post_Edit
+    [delete_Image_Post_Edit.pending]: (state, actions) => {
+      console.log(actions);
+      /*      state.loading = true;
+      state.progress = 0; */
+    },
+    [delete_Image_Post_Edit.fulfilled]: (state, actions) => {
+      console.log(actions.payload);
+      /*   state.status = actions.payload.status;
+      state.loading = false;
+      state.error = null; */
+    },
+    [delete_Image_Post_Edit.rejected]: (state, actions) => {
       console.log(actions);
       /*   state.status = actions.payload.status;
       state.loading = false;

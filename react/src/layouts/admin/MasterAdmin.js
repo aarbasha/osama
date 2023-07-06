@@ -6,7 +6,7 @@ import NavbarSerch from "./Navbar/NavbarSerch";
 import NavbarList from "./Navbar/NavbarList";
 import SidebarTabs from "./Sidebar/SidebarTabs";
 import SidebarContent from "./Sidebar/SidebarContent";
-import Logo from "../../images/brand-logo-2.png";
+import Logo from "../../images/osama logo-09 (2).png";
 
 const MasterAdmin = () => {
   const [isActive, setIsActive] = useState(false);
