@@ -1,17 +1,31 @@
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import DeleteCategories from "./DeleteCategories";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { editCategories } from "../../../app/toolkit/CategorieSlice";
+import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  editCategories,
+  insertchildren,
+} from "../../../app/toolkit/CategorieSlice";
 import { TimeDay } from "../../../Global/Time";
+
 const TableCategories = (props) => {
-  const rediract = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const { children } = useSelector((state) => state.categories);
 
   const dispatchEdit = async (id) => {
     await dispatch(editCategories(id));
-    rediract(`/admin/categories/edit_categories/${id}`);
+    navigate(`/admin/categories/edit_categories/${id}`);
+  };
+
+  /*  await dispatch(insertchildren(x));
+    const encodedData = encodeURIComponent(JSON.stringify(x));
+    */
+  const sendChildrenItems = async (x) => {
+    console.log(x);
+    navigate(`/admin/categories/all_categories`);
   };
 
   return (
@@ -50,9 +64,17 @@ const TableCategories = (props) => {
             <td>
               <div className="d-flex justify-content-center align-items-center gap-3 fs-6">
                 {/* show  */}
-                <button className="text-primary btn">
-                  <i className="bi bi-eye-fill" />
-                </button>
+
+                {item.children?.length > 0 ? (
+                  <>
+                    <button className="text-primary btn">
+                      {item.children.length}
+                      <i className="bi bi-eye-fill mx-2" />
+                    </button>
+                  </>
+                ) : (
+                  <i className="bi bi-eye-slash-fill" />
+                )}
 
                 {/* update */}
                 <button

@@ -22,7 +22,7 @@ export const All_Categories = createAsyncThunk(
   async (current_page, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        `${API_URL}/categories/all?page=${current_page}`,
+        `${API_URL}/categories/sub?page=${current_page}`,
         {
           withCredentials: true,
         }
@@ -131,6 +131,7 @@ export const updateCategories = createAsyncThunk(
 const initialState = {
   all_categories: [],
   old_categories: [],
+  children: [],
   status: null,
   loading: false,
   success: false,
@@ -148,6 +149,10 @@ export const CategorieSlice = createSlice({
     updateCurrentPage: (state, action) => {
       console.log(action.payload);
       state.current_page = action.payload;
+    },
+    insertchildren: (state, action) => {
+      state.children.push(action.payload);
+      console.log(action.payload);
     },
   },
   extraReducers: {
@@ -281,7 +286,6 @@ export const CategorieSlice = createSlice({
   },
 });
 
-export const { updateCurrentPage  } = CategorieSlice.actions
-
+export const { updateCurrentPage, insertchildren } = CategorieSlice.actions;
 
 export default CategorieSlice.reducer;

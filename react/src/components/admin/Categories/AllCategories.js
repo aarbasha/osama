@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
 import FadeOutAnimation from "../../../Animation/FadeOutAnimation";
 import { useDispatch, useSelector } from "react-redux";
-import { All_Categories, updateCategories, updateCurrentPage } from "../../../app/toolkit/CategorieSlice";
+import {
+  All_Categories,
+  updateCategories,
+  updateCurrentPage,
+} from "../../../app/toolkit/CategorieSlice";
 import "react-loading-skeleton/dist/skeleton.css";
 import Skeleton from "react-loading-skeleton";
 import TableCategories from "./TableCategories";
 import { Container } from "../../../Global/ToastContainer";
 import ReactPaginate from "react-paginate";
+import { useParams } from "react-router-dom";
 
 const AllCategories = () => {
   const dispatch = useDispatch();
-  const { all_categories, current_page, total, per_page } = useSelector(
-    (state) => state.categories
-  );
+  const { all_categories, current_page, total, per_page, children } =
+    useSelector((state) => state.categories);
   const [loading, setLoading] = useState(false);
   const [pageCount, setPageCount] = useState(0);
 
@@ -21,15 +25,17 @@ const AllCategories = () => {
       dispatch(All_Categories(current_page));
     }, 10000);
 
+
+
     setLoading(true);
     setPageCount(Math.ceil(total / per_page));
     Pagination();
     setTimeout(() => {
       dispatch(All_Categories(current_page));
       setLoading(false);
-      return clearInterval(interval)
+      return clearInterval(interval);
     }, 500);
-  }, [dispatch , current_page , total , per_page]);
+  }, [dispatch, current_page, total, per_page]);
 
   const Pagination = () => {
     return (
@@ -58,8 +64,8 @@ const AllCategories = () => {
 
   const handlePageClick = async (e) => {
     let current_page = e.selected + 1;
-   /*  await dispatch(All_Categories(current_page)); */
-   await dispatch(updateCurrentPage(current_page))
+    /*  await dispatch(All_Categories(current_page)); */
+    await dispatch(updateCurrentPage(current_page));
   };
 
   const handelChangeSelect = (e) => {

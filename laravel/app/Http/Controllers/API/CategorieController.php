@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
-use App\Http\Traits\GlobalTraits;
-use Illuminate\Http\Request;
 use App\Models\Categorie;
-use Illuminate\Support\Facades\File;
+use Illuminate\Http\Request;
+use App\Http\Traits\GlobalTraits;
+use App\Http\Controllers\Controller;
 use Illuminate\Validation\Validator;
+use Illuminate\Validation\Rules\File;
 use Illuminate\Support\Facades\Storage;
 
 class CategorieController extends Controller
@@ -56,7 +56,8 @@ class CategorieController extends Controller
 
     public function subCategory()
     {
-        $subCategory = Categorie::with('children')->whereNull('parent_id')->get();
+        $subCategory = Categorie::with('children.children.children')->whereNull('parent_id')->orderBy('created_at', 'desc')->paginate(5);
+;
 
 
         if ($subCategory) {

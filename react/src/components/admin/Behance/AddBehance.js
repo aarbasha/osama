@@ -17,7 +17,7 @@ const AddBehance = () => {
 
   const [inputs, setInputs] = useState({
     name: "",
-    name_folder: "",
+    links: "",
     info: "",
     auther: "",
   });
@@ -48,7 +48,7 @@ const AddBehance = () => {
 
     const data = new FormData();
     data.append("name", inputs.name);
-    data.append("name_folder", inputs.name_folder);
+    data.append("links", inputs.links);
     data.append("info", inputs.info);
     data.append("auther", user.username);
     data.append("cover", cover.cover);
@@ -58,7 +58,7 @@ const AddBehance = () => {
     setTimeout(() => {
       if (status === 200) {
         toastSuccess("success add categories");
-        rediract("/admin/categories/all_categories");
+        rediract("/admin/postBehance/all_post_behance");
       } else {
         toastError("Error");
         rediract(location.pathname);
@@ -98,20 +98,20 @@ const AddBehance = () => {
 
                     <div className="col-12 my-2">
                       <label className="form-label">
-                        Name folder Images Prodacts
+                      Links for Behance
                       </label>
                       <input
-                        type="text"
+                        type="url"
                         className="form-control"
                         placeholder="Enter Name"
-                        name="name_folder"
+                        name="links"
                         onChange={handelChangeInputs}
-                        value={inputs.name_folder}
+                        value={inputs.links}
                       />
                     </div>
 
                     {error ? (
-                      <p className="text-danger ">{error.name_folder}</p>
+                      <p className="text-danger ">{error.links}</p>
                     ) : null}
 
                     {/* enter input auther */}
@@ -196,7 +196,7 @@ const AddBehance = () => {
                           variant="white"
                         />
                       ) : (
-                        <> Add Categories</>
+                        <> Add Post In Behance</>
                       )}
                     </button>
 

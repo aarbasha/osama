@@ -5,11 +5,29 @@ import Tabs from "react-bootstrap/Tabs";
 import Form from "react-bootstrap/Form";
 
 const Add_Roles = () => {
+  const [Checked, setChecked] = useState([]);
+  const handleChangeChecked = (e) => {
+    const { value, checked } = e.target;
+
+    if (checked) {
+      // Add the checked value to the array
+      setChecked((prevChecked) => [...prevChecked, value]);
+    } else {
+      // Remove the unchecked value from the array
+      setChecked((prevChecked) => prevChecked.filter((item) => item !== value));
+    }
+  };
+
+  const submit = (e) => {
+    e.preventDefault();
+
+    console.log(Checked);
+  };
   return (
     <GlobalAnimation>
       <div className="card">
         <div className="card-body">
-          <form encType="multipart/form-data">
+          <form onSubmit={submit} encType="multipart/form-data">
             <div className="row">
               <div className="col-6 my-1">
                 <label className="form-label"> Name Roles</label>
@@ -151,9 +169,9 @@ const Add_Roles = () => {
                             type="checkbox"
                             id="Checked"
                             style={{ width: "60px", height: "20px" }}
-                            // onChange={(e) => handelChangechecked(e)}
+                            onChange={handleChangeChecked}
                             name="showCategories"
-                            // value={Checked.showCategories}
+                            value={"showCategories"}
                           />
                         </div>
 
@@ -164,9 +182,9 @@ const Add_Roles = () => {
                             type="checkbox"
                             id="Checked"
                             style={{ width: "60px", height: "20px" }}
-                            // onChange={(e) => handelChangechecked(e)}
                             name="addCategories"
-                            // value={Checked.addCategories}
+                            onChange={handleChangeChecked}
+                            value={"addCategories"}
                           />
                         </div>
 
@@ -177,9 +195,9 @@ const Add_Roles = () => {
                             type="checkbox"
                             id="Checked"
                             style={{ width: "60px", height: "20px" }}
-                            // onChange={(e) => handelChangechecked(e)}
+                            onChange={handleChangeChecked}
                             name="editCategories"
-                            // value={Checked.editCategories}
+                            value={"editCategories"}
                           />
                         </div>
 
@@ -190,9 +208,9 @@ const Add_Roles = () => {
                             type="checkbox"
                             id="Checked"
                             style={{ width: "60px", height: "20px" }}
-                            // onChange={(e) => handelChangechecked(e)}
+                            onChange={handleChangeChecked}
                             name="deleteCategories"
-                            // value={Checked.deleteCategories}
+                            value={"deleteCategories"}
                           />
                         </div>
                       </div>
@@ -208,9 +226,9 @@ const Add_Roles = () => {
                             type="checkbox"
                             id="Checked"
                             style={{ width: "60px", height: "20px" }}
-                            // onChange={(e) => handelChangechecked(e)}
+                            onChange={(e) => handleChangeChecked(e)}
                             name="showProducts"
-                            // value={Checked.showProducts}
+                            value={Checked.showProducts}
                           />
                         </div>
 
@@ -221,9 +239,9 @@ const Add_Roles = () => {
                             type="checkbox"
                             id="Checked"
                             style={{ width: "60px", height: "20px" }}
-                            // onChange={(e) => handelChangechecked(e)}
+                            onChange={(e) => handleChangeChecked(e)}
                             name="addProducts"
-                            // value={Checked.addProducts}
+                            value={Checked.addProducts}
                           />
                         </div>
 
@@ -234,9 +252,9 @@ const Add_Roles = () => {
                             type="checkbox"
                             id="Checked"
                             style={{ width: "60px", height: "20px" }}
-                            // onChange={(e) => handelChangechecked(e)}
+                            onChange={(e) => handleChangeChecked(e)}
                             name="editProducts"
-                            // value={Checked.editProducts}
+                            value={Checked.editProducts}
                           />
                         </div>
 
@@ -247,9 +265,9 @@ const Add_Roles = () => {
                             type="checkbox"
                             id="Checked"
                             style={{ width: "60px", height: "20px" }}
-                            // onChange={(e) => handelChangechecked(e)}
+                            onChange={(e) => handleChangeChecked(e)}
                             name="deleteProducts"
-                            // value={Checked.deleteProducts}
+                            value={Checked.deleteProducts}
                           />
                         </div>
                       </div>
