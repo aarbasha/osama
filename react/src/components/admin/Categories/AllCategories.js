@@ -145,7 +145,7 @@ const AllCategories = () => {
           </>
         )}
 
-        <nav className={"mt-5 h5 d-flex justify-content-center mt-3"}>
+        <nav className={"mt-5 h5 d-flex justify-content-center"}>
           {Pagination()}
         </nav>
 

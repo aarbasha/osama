@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\Api\BehanceController;
 use App\Http\Controllers\API\CategorieController;
 use App\Http\Controllers\API\OrdersController;
 use App\Http\Controllers\API\PostsController;
@@ -125,6 +126,24 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/all', 'tasks');
             //show tasks single  *
             Route::get('/{id}', 'task');
+            // add task
+            Route::post('/add', 'store');
+            //create tasks from orders
+            Route::post('/{id}', 'create');
+            // update task
+            Route::post('/up/{id}', 'update');
+            // destroy  tasks
+            Route::delete('/{id}', 'destroy');
+        });
+    });
+
+
+    Route::controller(BehanceController::class)->group(function () {
+        Route::prefix('behance')->group(function () {
+            //all tasks *
+            Route::get('/all', 'allPostBehance');
+            //show tasks single  *
+            Route::get('/{id}', 'SinglePostBehance');
             // add task
             Route::post('/add', 'store');
             //create tasks from orders
