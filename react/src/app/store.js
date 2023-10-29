@@ -4,8 +4,9 @@ import CategorieSlice from "./toolkit/CategorieSlice";
 import UsersSlice from "./toolkit/UsersSlice";
 import PostSlice from "./toolkit/PostSlice";
 import GlobalSlice from "./toolkit/GlobalSlice";
-import OrdersSlice from './toolkit/OrdersSlice';
+import OrdersSlice from "./toolkit/OrdersSlice";
 import TasksSlice from "./toolkit/TasksSlice";
+import BehanceSlice from "./toolkit/BehanceSlice";
 
 export const store = configureStore({
   reducer: {
@@ -13,8 +14,9 @@ export const store = configureStore({
     categories: CategorieSlice,
     users: UsersSlice,
     post: PostSlice,
-    global:GlobalSlice,
-    orders:OrdersSlice,
-    tasks:TasksSlice
+    global: GlobalSlice,
+    orders: OrdersSlice,
+    tasks: TasksSlice,
+    Behance: BehanceSlice,
   },
 });

@@ -152,7 +152,7 @@ export const RouterAdmin = () => {
       element: <MasterCategories />,
       children: [
         {
-          path: "all_categories",
+          path: `all_categories`,
           element: <AllCategories />,
         },
         {
